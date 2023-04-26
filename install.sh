@@ -72,4 +72,4 @@ fi
 # Refresh the current terminal with the newly installed configuration
 exec zsh
 
-echo "👌 Carry on with git setup!"
+echo "-----> All done! Enjoy your new terminal!"
