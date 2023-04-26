@@ -16,3 +16,10 @@ xclip:
 
 zsh:
 	@which zsh > /dev/null || (echo "Installing zsh and Oh My Zsh" && sudo apt-get update && sudo apt-get install -y zsh && sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)")
+
+setup:
+	# Install VScode extensions
+	./install-vscode-extensions.sh
+
+	# Run setup.sh to setup pyenv, symlink etc
+	./setup.sh
