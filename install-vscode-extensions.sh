@@ -3,8 +3,12 @@
 # Read existing extensions from file
 IFS=$'\n' read -d '' -r -a existing_extensions < vscode-extensions.txt
 
+touch new-vscode-extensions.txt
+
 # Read new extensions from file
 IFS=$'\n' read -d '' -r -a new_extensions < new-vscode-extensions.txt
+
+rm new-vscode-extensions.txt
 
 # Loop through new extensions and add to file if not already present
 for extension in "${new_extensions[@]}"; do
@@ -15,17 +19,12 @@ for extension in "${new_extensions[@]}"; do
 done
 
 # Install VSCode extensions listed in a file (with confirmation)
-while read extension; do
+while read -r extension; do
 	# Check if already installed
 	if code --list-extensions | grep -q "$extension"; then
 		echo "$extension is already installed"
 	else
-		# Install (if wanted)
-		read -p "Do you want to install $extension? (y/n) " choice
-		case "$choice" in
-			y|Y ) code --install-extension "$extension";;
-			n|N ) echo "Skipping $extension";;
-			* ) echo "Invalid options, skipping $extension";;
-		esac
+		# Install
+    code --install-extension "$extension"
 	fi
 done < vscode-extensions.txt

@@ -12,3 +12,5 @@ ms-vscode.makefile-tools
 ms-vscode.sublime-keybindings
 ms-vsliveshare.vsliveshare
 vintharas.learn-vim
+vscodevim.vim
+ritwickdey.LiveServer
