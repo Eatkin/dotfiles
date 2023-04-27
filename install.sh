@@ -69,6 +69,9 @@ if [[ `uname` =~ "Darwin" ]]; then
   ssh-add --apple-use-keychain ~/.ssh/id_ed25519
 fi
 
+# Let's also copy mount-nas.sh to home
+cp tools/mount-nas.sh ~/
+
 # Refresh the current terminal with the newly installed configuration
 exec zsh
 
