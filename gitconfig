@@ -3,15 +3,29 @@
 	editor = vim
 
 [alias]
-  co = checkout
-  st = status -sb
-  br = branch
-  ci = commit
-  fo = fetch origin
-  d = !git --no-pager diff
-  dt  = difftool
-  stat = !git --no-pager diff --stat
+  # One line log
+  l = log --pretty=format:"%C(yellow)%h\\ %ad%Cred%d\\ %Creset%s%Cblue\\ [%cn]" --decorate --date=short	
+  
+  a = add
+  ap = add -p
+  c = commit --verbose
+  ca = commit -a --verbose
+  cm = commit -m
+  cam = commit -a -m
 
+  d = diff
+  ds = diff -stat
+  dc = diff --cached
+
+  s = status -s
+  co =  checkout
+  sw = switch
+  # List branches
+  b = "!git for-each-ref --sort='-authordate' --format='%(authordate)%09%(objectname:short)%09%(refname)' refs/heads | sed -e 's-refs/heads/--'"
+  	
+  # list aliases
+  la = "!git config -l | grep alias | cut -c 7-"
+  
   # Set remotes/origin/HEAD -> defaultBranch (copied from https://stackoverflow.com/a/67672350/14870317)
   remoteSetHead = remote set-head origin --auto
 
