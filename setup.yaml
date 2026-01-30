@@ -1,0 +1,27 @@
+core:
+  enabled: true
+
+dev:
+  enabled: false
+
+cloud:
+  enabled: false
+
+media:
+  enabled: false
+
+gaming:
+  enabled: false
+
+personal:
+  enabled: false
+
+repos:
+  enabled: false
+
+templates:
+  enabled: true
+
+desktop:
+  enabled: false
+
