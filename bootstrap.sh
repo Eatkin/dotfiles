@@ -64,8 +64,8 @@ DESKTOP=$(yq e '.desktop' setup.yaml)
 [ "$DEV" = "true" ] && bash modules/dev.sh
 [ "$CLOUD" = "true" ] && bash modules/cloud.sh
 [ "$WEIRD_LANGS" = "true" ] && bash modules/weird-langs.sh
-exit 0
 [ "$MEDIA" = "true" ] && bash modules/media.sh
+exit 0
 [ "$LATEX" = "true" ] && bash modules/latex.sh
 [ "$GAMING" = "true" ] && bash modules/gaming.sh
 [ "$PERSONAL" = "true" ] && bash modules/personal.sh

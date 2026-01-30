@@ -3,10 +3,13 @@ vim: true
 dev: true
 cloud: true
 weird-langs: true
-media: false
-latex: false
+media: true
+media-optional: true
+latex: true
+network: true
 gaming: true
 personal: true
+data: true
 repos: true
 templates: true
 desktop: true
