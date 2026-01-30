@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+# getclip: print system clipboard to stdout
+
+if command -v wl-paste >/dev/null 2>&1; then
+  wl-paste
+elif command -v xclip >/dev/null 2>&1; then
+  xclip -selection clipboard -o
+else
+  echo "No clipboard tool found (install wl-clipboard or xclip)" >&2
+  exit 1
+fi
+
