@@ -16,3 +16,7 @@ if command -v direnv >/dev/null 2>&1; then
     eval "$(direnv hook bash)"
 fi
 
+# Miniconda PATH
+if [ -d "$HOME/miniconda3/bin" ] && [[ ":$PATH:" != *":$HOME/miniconda3/bin:"* ]]; then
+    export PATH="$HOME/miniconda3/bin:$PATH"
+fi

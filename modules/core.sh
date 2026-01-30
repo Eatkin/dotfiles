@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+set -e
+
 # Git core setup
 GITCONFIG_SRC="$HOME/dotfiles/git/gitconfig"
 GITCONFIG_DEST="$HOME/.gitconfig"

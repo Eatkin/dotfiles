@@ -61,8 +61,8 @@ DESKTOP=$(yq e '.desktop' setup.yaml)
 [ "$CORE" = "true" ] && bash modules/core.sh
 [ "$VIM" = "true" ] && bash modules/vim.sh
 [ "$DEV" = "true" ] && bash modules/dev.sh
-exit 0
 [ "$CLOUD" = "true" ] && bash modules/cloud.sh
+exit 0
 [ "$MEDIA" = "true" ] && bash modules/media.sh
 [ "$LATEX" = "true" ] && bash modules/latex.sh
 [ "$GAMING" = "true" ] && bash modules/gaming.sh
