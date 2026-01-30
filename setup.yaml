@@ -9,7 +9,6 @@ latex: true
 network: true
 data: true
 gaming: true
-personal: true
 repos: true
 templates: true
 desktop: true

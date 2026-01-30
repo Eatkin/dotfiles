@@ -44,6 +44,7 @@ echo "Installing IaC tools"
 # Use Pulumilocal wrapper (includes Pulumi)
 if ! command -v pulumilocal >/dev/null 2>&1; then
     echo "Installing Pulumi..."
+    curl -fsSL https://get.pulumi.com | sh
     pipx install pulumi-local
     echo "Pulumi installed"
 fi
