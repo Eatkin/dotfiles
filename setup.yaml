@@ -1,27 +1,11 @@
-core:
-  enabled: true
-
-dev:
-  enabled: false
-
-cloud:
-  enabled: false
-
-media:
-  enabled: false
-
-gaming:
-  enabled: false
-
-personal:
-  enabled: false
-
-repos:
-  enabled: false
-
-templates:
-  enabled: true
-
-desktop:
-  enabled: false
-
+core: true
+vim: true
+dev: true
+cloud: true
+media: false
+latex: false
+gaming: true
+personal: true
+repos: true
+templates: true
+desktop: true

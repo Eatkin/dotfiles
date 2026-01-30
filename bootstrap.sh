@@ -29,61 +29,44 @@ if ! grep -q "dotfiles/bash/bashrc.sh" "$BASHRC"; then
   echo "" >> "$BASHRC"
   echo "$BLOCK" >> "$BASHRC"
   echo "Added dotfiles bootstrap to .bashrc"
-else
-  echo "Dotfiles bootstrap already present in .bashrc"
 fi
 
-
-# Git core setup
-GITCONFIG_SRC="$HOME/dotfiles/git/gitconfig"
-GITCONFIG_DEST="$HOME/.gitconfig"
-
-if [ ! -f "$GITCONFIG_DEST" ]; then
-    cp "$GITCONFIG_SRC" "$GITCONFIG_DEST"
-    echo "Installed global gitconfig"
-else
-    echo "Global gitconfig already exists"
+# Install snap if missing
+if ! command -v snap >/dev/null 2>&1; then
+    echo "Snap not found, installing snapd..."
+    sudo apt update
+    sudo apt install -y snapd
 fi
 
-# System installs (ignore missing packages)
-echo "Installing core utilities..."
-CORE_PACKAGES=(jq ripgrep fd-find curl wget bat tree htop ruby)
-for pkg in "${CORE_PACKAGES[@]}"; do
-    if ! sudo apt install -y "$pkg"; then
-        echo "Could not install $pkg via apt"
-    fi
-done
-
-# Install lolcat (gem)
-if ! command -v lolcat >/dev/null 2>&1; then
-    sudo gem install lolcat
+# Load YAML parser
+if ! command -v yq >/dev/null 2>&1; then
+    echo "Installing yq for YAML parsing..."
+    sudo snap install yq
 fi
 
-# Symlink fd if using fd-find
-if command -v fdfind >/dev/null 2>&1; then
-    ln -sf "$(which fdfind)" ~/dotfiles/bin/fd
-fi
+# Read setup.yaml
+CORE=$(yq e '.core' setup.yaml)
+VIM=$(yq e '.vim' setup.yaml)
+DEV=$(yq e '.dev' setup.yaml)
+CLOUD=$(yq e '.cloud' setup.yaml)
+MEDIA=$(yq e '.media' setup.yaml)
+LATEX=$(yq e '.latex' setup.yaml)
+GAMING=$(yq e '.gaming' setup.yaml)
+PERSONAL=$(yq e '.personal' setup.yaml)
+REPOS=$(yq e '.repos' setup.yaml)
+TEMPLATES=$(yq e '.templates' setup.yaml)
+DESKTOP=$(yq e '.desktop' setup.yaml)
 
-# Symlink batcat to bat
-if command -v batcat >/dev/null 2>&1; then
-    ln -sf "$(which batcat)" ~/dotfiles/bin/bat
-fi
-
-
-# Glow: fallback to GitHub if apt fails
-if ! command -v glow >/dev/null 2>&1; then
-    echo "Glow not found via apt, downloading latest release..."
-    mkdir -p ~/bin
-    RELEASE_URL=$(curl -s https://api.github.com/repos/charmbracelet/glow/releases/latest \
-    | jq -r '.assets[] | select(.name | test("amd64.deb$")) | .browser_download_url')
-    if [ -z "$RELEASE_URL" ]; then
-        echo "Could not find amd64 deb for glow"
-        exit 1
-    fi
-    wget -O ~/glow.deb "$RELEASE_URL"
-    sudo dpkg -i ~/glow.deb || sudo apt -f install -y
-    rm ~/glow.deb
-fi
-
-# Test glow
-glow --version || echo "Glow setup failed!"
+# Run modules based on YAML
+[ "$CORE" = "true" ] && bash modules/core.sh
+[ "$VIM" = "true" ] && bash modules/vim.sh
+[ "$DEV" = "true" ] && bash modules/dev.sh
+exit 0
+[ "$CLOUD" = "true" ] && bash modules/cloud.sh
+[ "$MEDIA" = "true" ] && bash modules/media.sh
+[ "$LATEX" = "true" ] && bash modules/latex.sh
+[ "$GAMING" = "true" ] && bash modules/gaming.sh
+[ "$PERSONAL" = "true" ] && bash modules/personal.sh
+[ "$REPOS" = "true" ] && bash modules/repos.sh
+[ "$TEMPLATES" = "true" ] && bash modules/templates.sh
+[ "$DESKTOP" = "true" ] && bash modules/desktop.sh

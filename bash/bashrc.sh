@@ -11,4 +11,8 @@ if [ -f /usr/share/bash-completion/completions/git ]; then
     source /usr/share/bash-completion/completions/git
 fi
 
+# Direnv hook
+if command -v direnv >/dev/null 2>&1; then
+    eval "$(direnv hook bash)"
+fi
 

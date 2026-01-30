@@ -6,3 +6,4 @@ Personal machine bootstrap and tooling.
 - Idempotent install scripts
 - Explicit auth steps 
 - Modular categories for work vs personal machines
+
