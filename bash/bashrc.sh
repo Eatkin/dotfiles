@@ -20,3 +20,8 @@ fi
 if [ -d "$HOME/miniconda3/bin" ] && [[ ":$PATH:" != *":$HOME/miniconda3/bin:"* ]]; then
     export PATH="$HOME/miniconda3/bin:$PATH"
 fi
+
+# Initialise conda for shell sessions
+if [ -f "$HOME/miniconda3/etc/profile.d/conda.sh" ]; then
+    . "$HOME/miniconda3/etc/profile.d/conda.sh"
+fi
