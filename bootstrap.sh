@@ -28,3 +28,14 @@ else
   echo "Dotfiles bootstrap already present in .bashrc"
 fi
 
+
+# Git core setup
+GITCONFIG_SRC="$HOME/dotfiles/git/gitconfig"
+GITCONFIG_DEST="$HOME/.gitconfig"
+
+if [ ! -f "$GITCONFIG_DEST" ]; then
+    cp "$GITCONFIG_SRC" "$GITCONFIG_DEST"
+    echo "Installed global gitconfig"
+else
+    echo "Global gitconfig already exists"
+fi

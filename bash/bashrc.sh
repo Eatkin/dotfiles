@@ -6,3 +6,9 @@ for f in env aliases functions; do
   [ -f "$HOME/dotfiles/bash/$f.sh" ] && source "$HOME/dotfiles/bash/$f.sh"
 done
 
+# Git completions
+if [ -f /usr/share/bash-completion/completions/git ]; then
+    source /usr/share/bash-completion/completions/git
+fi
+
+
