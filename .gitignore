@@ -1,3 +1,4 @@
 bin/bat
 bin/fd
 *.deb
+google-cloud-sdk

@@ -11,15 +11,14 @@ if ! command -v aws >/dev/null 2>&1; then
 fi
 
 if ! command -v gcloud >/dev/null 2>&1; then
+    DEST="$HOME"
     echo "Installing Google Cloud CLI..."
-    # Add Google Cloud package repo
-    if ! grep -q "packages.cloud.google.com" /etc/apt/sources.list.d/google-cloud-sdk.list 2>/dev/null; then
-        echo "Adding Google Cloud SDK repo..."
-        echo "deb [signed-by=/usr/share/keyrings/cloud.google.gpg] http://packages.cloud.google.com/apt cloud-sdk main" | sudo tee /etc/apt/sources.list.d/google-cloud-sdk.list
-        curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo tee /usr/share/keyrings/cloud.google.gpg
-    fi
-    sudo apt update
-    sudo apt install -y google-cloud-cli
+    curl -O https://dl.google.com/dl/cloudsdk/channels/rapid/downloads/google-cloud-cli-linux-x86_64.tar.gz
+    tar -xf google-cloud-cli-linux-x86_64.tar.gz --directory "$HOME"
+    # Install quietly
+    "$DEST/google-cloud-sdk/install.sh" --quiet --usage-reporting=false
+    # Cleanup
+    rm $DEST/*.tar.gz
     echo "Google Cloud CLI installed"
 fi
 
@@ -28,6 +27,7 @@ if ! command -v pip3 >/dev/null 2>&1; then
     sudo apt install -y python3-pip
 fi
 
+# LocalStack
 if ! command -v localstack >/dev/null 2>&1; then
     echo "Installing LocalStack..."
     pip3 install --user localstack
