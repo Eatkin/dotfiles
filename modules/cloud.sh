@@ -23,13 +23,33 @@ if ! command -v gcloud >/dev/null 2>&1; then
     echo "Google Cloud CLI installed"
 fi
 
+# Ensure pip exists
+if ! command -v pip3 >/dev/null 2>&1; then
+    sudo apt install -y python3-pip
+fi
+
 if ! command -v localstack >/dev/null 2>&1; then
     echo "Installing LocalStack..."
-    # Install via pip (ensure pip exists)
-    if ! command -v pip3 >/dev/null 2>&1; then
-        sudo apt install -y python3-pip
-    fi
     pip3 install --user localstack
     echo "LocalStack installed"
 fi
 
+echo "Installing IaC tools"
+
+# Use Pulumilocal wrapper (includes Pulumi)
+if ! command -v pulumi >/dev/null 2>&1; then
+    echo "Installing Pulumi..."
+    pip3 install --user pulumilocal
+    echo "Pulumi installed"
+fi
+
+# Terraform
+if ! command -v terraform >/dev/null 2>&1; then
+    sudo apt install -y gnupg software-properties-common curl
+    curl -fsSL https://apt.releases.hashicorp.com/gpg | sudo gpg --dearmor -o /usr/share/keyrings/hashicorp-archive-keyring.gpg
+    echo "deb [signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] https://apt.releases.hashicorp.com $(lsb_release -cs) main" \
+        | sudo tee /etc/apt/sources.list.d/hashicorp.list
+    sudo apt update
+    sudo apt install -y terraform
+    echo "Terraform installed"
+fi

@@ -2,6 +2,7 @@ core: true
 vim: true
 dev: true
 cloud: true
+weird-langs: true
 media: false
 latex: false
 gaming: true

@@ -49,6 +49,7 @@ CORE=$(yq e '.core' setup.yaml)
 VIM=$(yq e '.vim' setup.yaml)
 DEV=$(yq e '.dev' setup.yaml)
 CLOUD=$(yq e '.cloud' setup.yaml)
+WEIRD_LANGS=$(yq e '.weird-langs' setup.yaml)
 MEDIA=$(yq e '.media' setup.yaml)
 LATEX=$(yq e '.latex' setup.yaml)
 GAMING=$(yq e '.gaming' setup.yaml)
@@ -62,6 +63,7 @@ DESKTOP=$(yq e '.desktop' setup.yaml)
 [ "$VIM" = "true" ] && bash modules/vim.sh
 [ "$DEV" = "true" ] && bash modules/dev.sh
 [ "$CLOUD" = "true" ] && bash modules/cloud.sh
+[ "$WEIRD_LANGS" = "true" ] && bash modules/weird-langs.sh
 exit 0
 [ "$MEDIA" = "true" ] && bash modules/media.sh
 [ "$LATEX" = "true" ] && bash modules/latex.sh
