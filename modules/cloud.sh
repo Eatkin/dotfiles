@@ -32,6 +32,12 @@ if ! command -v pipx >/dev/null 2>&1; then
     pipx ensurepath
 fi
 
+# Awslocal
+if ! command -v awslocal >/dev/null 2>&1; then
+    echo "Installing awslocal"
+    pipx install awscli-local
+fi
+
 # LocalStack
 if ! command -v localstack >/dev/null 2>&1; then
     echo "Installing LocalStack..."

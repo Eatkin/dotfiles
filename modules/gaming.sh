@@ -6,6 +6,7 @@ STEAM=$(yq e '.["gaming-options"].steam' setup.yaml)
 HEROIC=$(yq e '.["gaming-options"].heroic' setup.yaml)
 OPENRCT2=$(yq e '.["gaming-options"].openrct2' setup.yaml)
 EMULATION=$(yq e '.["gaming-options"].emulation' setup.yaml)
+PCSX2=$(yq e '.["gaming-options"].pcsx2' setup.yaml)
 
 if [ "$STEAM" = "true" ]; then
   echo "Installing Steam..."
@@ -65,6 +66,29 @@ if [ "$EMULATION" = "true" ]; then
   echo "Installing emulation tools..."
   sudo apt install -y retroarch dosbox || echo "Emulation install failed"
 fi
+
+if [ "$PCSX2" = "true" ]; then
+  echo "Installing PCSX2 (AppImage)..."
+  APPDIR="$HOME/Applications"
+  mkdir -p "$APPDIR"
+
+  RELEASE_JSON=$(curl -fsSL "https://api.github.com/repos/PCSX2/pcsx2/releases/latest")
+  DOWNLOAD_URL=$(echo "$RELEASE_JSON" \
+    | jq -r '.assets[] | select(.name | test("AppImage$")) | .browser_download_url')
+
+  APPIMAGE="$APPDIR/PCSX2.AppImage"
+
+  if [ -z "$DOWNLOAD_URL" ]; then
+    echo "Could not find PCSX2 AppImage!"
+  else
+    if [ ! -f "$APPIMAGE" ]; then
+      curl -L "$DOWNLOAD_URL" -o "$APPIMAGE"
+      chmod +x "$APPIMAGE"
+      echo "PCSX2 installed"
+    fi
+  fi
+fi
+
 
 EXTRAS=(gamemode mangohud wine winetricks xpad)
 for pkg in "${EXTRAS[@]}"; do

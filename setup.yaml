@@ -21,4 +21,5 @@ gaming-options:
   heroic: true
   openrct2: true
   emulation: false
+  pcsx2: true
 
