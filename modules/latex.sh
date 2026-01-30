@@ -19,7 +19,7 @@ LATEX_PACKAGES=(
 
 for pkg in "${LATEX_PACKAGES[@]}"; do
   if ! dpkg -s "$pkg" >/dev/null 2>&1; then
-    sudo apt install -y "$pkg"
+    sudo apt install -y "$pkg" || echo "Failed to collect package $pkg"
   fi
 done
 

@@ -42,7 +42,7 @@ fi
 echo "Installing IaC tools"
 
 # Use Pulumilocal wrapper (includes Pulumi)
-if ! command -v pulumi >/dev/null 2>&1; then
+if ! command -v pulumilocal >/dev/null 2>&1; then
     echo "Installing Pulumi..."
     pipx install pulumi-local
     echo "Pulumi installed"

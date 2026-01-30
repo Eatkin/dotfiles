@@ -52,6 +52,8 @@ CLOUD=$(yq e '.cloud' setup.yaml)
 WEIRD_LANGS=$(yq e '.weird-langs' setup.yaml)
 MEDIA=$(yq e '.media' setup.yaml)
 LATEX=$(yq e '.latex' setup.yaml)
+DATA=$(yq e '.data' setup.yaml)
+NETWORK=$(yq e '.network' setup.yaml)
 GAMING=$(yq e '.gaming' setup.yaml)
 PERSONAL=$(yq e '.personal' setup.yaml)
 REPOS=$(yq e '.repos' setup.yaml)
@@ -66,10 +68,10 @@ DESKTOP=$(yq e '.desktop' setup.yaml)
 [ "$WEIRD_LANGS" = "true" ] && bash modules/weird-langs.sh
 [ "$MEDIA" = "true" ] && bash modules/media.sh
 [ "$LATEX" = "true" ] && bash modules/latex.sh
-exit 0
 [ "$NETWORK" = "true" ] && bash modules/network.sh
 [ "$DATA" = "true" ] && bash modules/data.sh
 [ "$GAMING" = "true" ] && bash modules/gaming.sh
+exit 0
 [ "$PERSONAL" = "true" ] && bash modules/personal.sh
 [ "$REPOS" = "true" ] && bash modules/repos.sh
 [ "$TEMPLATES" = "true" ] && bash modules/templates.sh

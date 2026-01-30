@@ -7,9 +7,16 @@ media: true
 media-optional: true
 latex: true
 network: true
+data: true
 gaming: true
 personal: true
-data: true
 repos: true
 templates: true
 desktop: true
+
+gaming-options:
+  steam: true
+  heroic: true
+  openrct2: true
+  emulation: false
+

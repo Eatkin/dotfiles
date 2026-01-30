@@ -15,7 +15,7 @@ fi
 
 # System installs (ignore missing packages)
 echo "Installing core utilities..."
-CORE_PACKAGES=(jq ripgrep curl wget bat tree htop ruby)
+CORE_PACKAGES=(jq ripgrep curl wget bat tree htop ruby libfuse2)
 for pkg in "${CORE_PACKAGES[@]}"; do
     if ! command -v "$pkg" >/dev/null 2>&1; then
         if ! sudo apt install -y "$pkg"; then
