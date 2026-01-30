@@ -71,8 +71,8 @@ DESKTOP=$(yq e '.desktop' setup.yaml)
 [ "$NETWORK" = "true" ] && bash modules/network.sh
 [ "$DATA" = "true" ] && bash modules/data.sh
 [ "$GAMING" = "true" ] && bash modules/gaming.sh
+[ "$REPOS" = "true" ] && bash modules/repos.sh
 exit 0
 [ "$PERSONAL" = "true" ] && bash modules/personal.sh
-[ "$REPOS" = "true" ] && bash modules/repos.sh
 [ "$TEMPLATES" = "true" ] && bash modules/templates.sh
 [ "$DESKTOP" = "true" ] && bash modules/desktop.sh
