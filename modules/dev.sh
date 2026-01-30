@@ -71,3 +71,22 @@ if ! command -v docker >/dev/null 2>&1; then
     sudo usermod -aG docker "$USER"
     echo "Docker installed"
 fi
+
+# Chromedriver is necessary
+CHROMEDRIVER=$(yq e '.["dev-options"].chromedriver' setup.yaml)
+
+if [ "$CHROMEDRIVER" = "true" ]; then
+    BIN_DIR="$HOME/.local/bin"
+    mkdir -p "$BIN_DIR"
+
+    if ! command -v chromedriver >/dev/null 2>&1; then
+        echo "Installing ChromeDriver..."
+        LATEST=$(curl -sS https://chromedriver.storage.googleapis.com/LATEST_RELEASE)
+        curl -L -o /tmp/chromedriver_linux64.zip \
+             "https://chromedriver.storage.googleapis.com/${LATEST}/chromedriver_linux64.zip"
+        unzip -o /tmp/chromedriver_linux64.zip -d "$BIN_DIR"
+        chmod +x "$BIN_DIR/chromedriver"
+        rm /tmp/chromedriver_linux64.zip
+        echo "ChromeDriver installed at $BIN_DIR/chromedriver"
+    fi
+fi
