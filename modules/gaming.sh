@@ -90,7 +90,7 @@ if [ "$PCSX2" = "true" ]; then
 fi
 
 
-EXTRAS=(gamemode mangohud wine winetricks xpad)
+EXTRAS=(gamemode mangohud wine winetricks xpad aisleriot)
 for pkg in "${EXTRAS[@]}"; do
     if ! command -v "$pkg" >/dev/null 2>&1; then
         if ! sudo apt install -y "$pkg"; then
