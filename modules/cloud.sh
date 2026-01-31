@@ -38,6 +38,12 @@ if ! command -v awslocal >/dev/null 2>&1; then
     pipx install awscli-local
 fi
 
+# Awscurl
+if ! command -v awscurl >/dev/null 2>&1; then
+    echo "Installing awscurl"
+    pipx install awscurl
+fi
+
 # LocalStack
 if ! command -v localstack >/dev/null 2>&1; then
     echo "Installing LocalStack..."
