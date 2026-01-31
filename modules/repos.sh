@@ -12,6 +12,11 @@ REPOS=(
     "git@github.com:Eatkin/portfolio-page-2.git"
     "git@github.com:Eatkin/writing.git"
     "git@github.com:Eatkin/journal"
+    "git@github.com:Eatkin/pokemon_db.git"
+    "git@github.com:Eatkin/manga_scraper.git"
+    "git@github.com:Eatkin/hero_quests.git"
+    "git@github.com:Eatkin/joblens.git"
+    "git@github.com:Eatkin/cv_pipeline.git"
 )
 
 CODE_DIR="$HOME/code"

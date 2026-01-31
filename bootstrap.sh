@@ -74,3 +74,7 @@ DESKTOP=$(yq e '.desktop' setup.yaml)
 [ "$REPOS" = "true" ] && bash modules/repos.sh
 [ "$TEMPLATES" = "true" ] && bash modules/templates.sh
 [ "$DESKTOP" = "true" ] && bash modules/desktop.sh
+
+# Reload env
+unset DOTFILES_BASH_LOADED
+source ~/.bashrc

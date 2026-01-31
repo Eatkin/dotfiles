@@ -25,3 +25,8 @@ fi
 if [ -f "$HOME/miniconda3/etc/profile.d/conda.sh" ]; then
     . "$HOME/miniconda3/etc/profile.d/conda.sh"
 fi
+
+# Load custom functions
+if [ -f "$HOME/dotfiles/bash/functions.sh" ]; then
+    source "$HOME/dotfiles/bash/functions.sh"
+fi
