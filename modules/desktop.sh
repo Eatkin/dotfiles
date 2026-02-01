@@ -21,12 +21,17 @@ if [ ! -f "$STARTUP_SCRIPT" ]; then
   echo "Creating startup script at $STARTUP_SCRIPT"
   cat <<EOF > "$STARTUP_SCRIPT"
 while read dir cmd; do
+  # Bypass - cosmic-term does not allow --tab like gnome terminal (yet)
+  # Skip empty lines or lines starting with #
+  [[ -z "$dir" || "$dir" =~ ^# ]] && continue
   if [ -n "$cmd" ]; then
-    cosmic-terminal --tab -d "$dir" -e "$cmd"
+    cosmic-term --tab -d "$dir" -e "$cmd"
   else
-    cosmic-terminal --tab -d "$dir"
+    cosmic-term --tab -d "$dir"
   fi
-done < "$STARTUP_LIST"
+done
+# Literally just open Terminal
+cosmic-term < "$STARTUP_LIST"
 EOF
 
   chmod +x "$STARTUP_SCRIPT"
