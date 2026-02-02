@@ -31,7 +31,7 @@ while read -r ext; do
         code --install-extension "$ext"
         echo "✓ Installed $ext"
     fi
-done < ~/dotfiles/vscode/extensions.txt
+done < ~/dotfiles/etc/vscode-extensions.txt
 
 echo "Synchronising settings"
 VSCODE_SETTINGS="$HOME/.config/Code/User/settings.json"

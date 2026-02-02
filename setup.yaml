@@ -12,6 +12,7 @@ gaming: true
 repos: true
 templates: true
 desktop: true
+rss: true
 
 dev-options:
   chromedriver: true

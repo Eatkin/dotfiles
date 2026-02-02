@@ -7,6 +7,9 @@ __revert_project() {
     fi
 }
 
+__file_nonempty() {
+    [ -f "$1" ] && [ -s "$1" ]
+}
 
 sync_data() {
     local MODE="$1"   # push | pull
@@ -35,7 +38,7 @@ sync_data() {
         gcloud config set project "$PROJECT_ID"
     fi
 
-    # Ensure local dir exists if necessary
+     #Ensure local dir exists if necessary
     if [ "$MODE" = "pull" ]; then
         mkdir -p "$LOCAL_DIR" || {
             echo "Failed to create $LOCAL_DIR"
@@ -49,6 +52,41 @@ sync_data() {
         __revert_project "$CURRENT_PROJECT" "$REVERT_PROJECT"
         return 1
     }
+
+    # If we have newsboat sync the urls file
+    # This is a special case cause newsboat lives in its own directory and is not managed by me
+    if command -v newsboat >/dev/null 2>&1; then
+        DATA_SOURCE="$LOCAL_DIR/rss"
+        SNAP_DEST="$HOME/snap/newsboat/current/.newsboat/"
+
+        # Make sure they exist
+        mkdir -p "$DATA_SOURCE"
+        mkdir -p "$SNAP_DEST"
+
+        DATA_FILE="$DATA_SOURCE/urls"
+        NEWSBOAT_FILE="$SNAP_DEST/urls"
+        
+        # This uses a smart sync so the newest file is always kept
+        # Avoids overwriting with blank files
+        if __file_nonempty "$DATA_FILE" && __file_nonempty "$NEWSBOAT_FILE"; then
+            # Both exist and have content: newer wins
+            if [ "$DATA_FILE" -nt "$NEWSBOAT_FILE" ]; then
+                rsync -au "$DATA_FILE" "$NEWSBOAT_FILE"
+            else
+                rsync -au "$NEWSBOAT_FILE" "$DATA_FILE"
+            fi
+        elif __file_nonempty "$DATA_FILE"; then
+            # Only canonical exists: copy to Newsboat
+            rsync -au "$DATA_FILE" "$NEWSBOAT_FILE"
+        elif __file_nonempty "$NEWSBOAT_FILE"; then
+            # Only Newsboat exists: copy to canonical
+            rsync -au "$NEWSBOAT_FILE" "$DATA_FILE"
+        else
+            # Neither exists or both empty: do nothing
+            echo "Warning: no RSS URLs found in either location, nothing synced."
+        fi
+    fi
+
 
     case "$MODE" in
         push)
@@ -67,5 +105,6 @@ sync_data() {
     esac
 
     __revert_project "$CURRENT_PROJECT" "$REVERT_PROJECT"
+
 }
 
