@@ -59,6 +59,7 @@ PERSONAL=$(yq e '.personal' setup.yaml)
 REPOS=$(yq e '.repos' setup.yaml)
 TEMPLATES=$(yq e '.templates' setup.yaml)
 DESKTOP=$(yq e '.desktop' setup.yaml)
+RSS=$(yq e '.rss' setup.yaml)
 
 # Run modules based on YAML
 [ "$CORE" = "true" ] && bash modules/core.sh
@@ -69,6 +70,7 @@ DESKTOP=$(yq e '.desktop' setup.yaml)
 [ "$MEDIA" = "true" ] && bash modules/media.sh
 [ "$LATEX" = "true" ] && bash modules/latex.sh
 [ "$NETWORK" = "true" ] && bash modules/network.sh
+[ "$RSS" = "true" ] && bash modules/rss.sh
 [ "$DATA" = "true" ] && bash modules/data.sh
 [ "$GAMING" = "true" ] && bash modules/gaming.sh
 [ "$REPOS" = "true" ] && bash modules/repos.sh
