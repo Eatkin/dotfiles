@@ -62,3 +62,21 @@ EOF
   systemctl --user start cosmic-startup.service
 fi
 
+# Emoji!!
+if ! command -v flatpak >/dev/null 2>&1; then
+    echo "Flatpak not installed! Installing..."
+    sudo apt install -y flatpak
+fi
+if flatpak list | grep -q 'it.mijorus.smile'; then
+    echo "Installing emoji picker..."
+    flatpak install --user flathub it.mijorus.smile -y
+fi
+
+# Package name
+EMOJI_FONT="fonts-noto-color-emoji"
+
+if ! dpkg -s $EMOJI_FONT >/dev/null 2>&1; then
+    echo "Installing $EMOJI_FONT..."
+    sudo apt install -y $EMOJI_FONT
+fi
+
