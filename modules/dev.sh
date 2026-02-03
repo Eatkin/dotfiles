@@ -72,7 +72,7 @@ if ! command -v docker >/dev/null 2>&1; then
     echo "Docker installed"
 fi
 
-# Chromedriver is necessary
+# ChromeDriver is necessary
 CHROMEDRIVER=$(yq e '.["dev-options"].chromedriver' setup.yaml)
 
 if [ "$CHROMEDRIVER" = "true" ]; then
@@ -80,13 +80,28 @@ if [ "$CHROMEDRIVER" = "true" ]; then
     mkdir -p "$BIN_DIR"
 
     if ! command -v chromedriver >/dev/null 2>&1; then
-        echo "Installing ChromeDriver..."
-        LATEST=$(curl -sS https://chromedriver.storage.googleapis.com/LATEST_RELEASE)
-        curl -L -o /tmp/chromedriver_linux64.zip \
-             "https://chromedriver.storage.googleapis.com/${LATEST}/chromedriver_linux64.zip"
-        unzip -o /tmp/chromedriver_linux64.zip -d "$BIN_DIR"
+        echo "Installing ChromeDriver (stable, last-known-good)..."
+
+        JSON_URL="https://googlechromelabs.github.io/chrome-for-testing/last-known-good-versions-with-downloads.json"
+
+        DRIVER_URL=$(curl -sS "$JSON_URL" | jq -r '
+          .channels.stable.downloads.chromedriver[]
+          | select(.platform == "linux64")
+          | .url
+        ')
+
+        if [ -z "$DRIVER_URL" ] || [ "$DRIVER_URL" = "null" ]; then
+            echo "Failed to determine ChromeDriver download URL"
+            exit 1
+        fi
+
+        TMP_ZIP="/tmp/chromedriver-linux64.zip"
+
+        curl -L -o "$TMP_ZIP" "$DRIVER_URL"
+        unzip -o "$TMP_ZIP" -d "$BIN_DIR"
         chmod +x "$BIN_DIR/chromedriver"
-        rm /tmp/chromedriver_linux64.zip
+        rm -f "$TMP_ZIP"
+
         echo "ChromeDriver installed at $BIN_DIR/chromedriver"
     fi
 fi
