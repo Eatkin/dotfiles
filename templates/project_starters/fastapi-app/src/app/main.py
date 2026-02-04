@@ -1,0 +1,10 @@
+from fastapi import FastAPI
+from app.api.routes import router
+from app.core.config import SETTINGS
+
+def create_app() -> FastAPI:
+    app = FastAPI(title=SETTINGS.app_name)
+    app.include_router(router)
+    return app
+
+app = create_app()
