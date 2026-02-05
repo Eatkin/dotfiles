@@ -17,6 +17,7 @@ REPOS=(
     "git@github.com:Eatkin/hero_quests.git"
     "git@github.com:Eatkin/joblens.git"
     "git@github.com:Eatkin/cv_pipeline.git"
+    "git@github.com:Eatkin/chaos-workout-planner.git"
 )
 
 CODE_DIR="$HOME/code"
