@@ -12,8 +12,8 @@ authors = [
 license = { text="MIT" }
 keywords = ["python", "starter", "template"]
 
-[project.dependencies]
-# runtime dependencies here
+dependencies = [
+]
 
 [project.optional-dependencies]
 dev = [
