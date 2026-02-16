@@ -1,0 +1,11 @@
+charliermarsh.ruff
+esbenp.prettier-vscode
+github.copilot
+github.copilot-chat
+ms-python.black-formatter
+ms-python.debugpy
+ms-python.mypy-type-checker
+ms-python.python
+ms-python.vscode-pylance
+ms-python.vscode-python-envs
+vscodevim.vim
