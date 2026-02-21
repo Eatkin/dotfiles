@@ -39,10 +39,6 @@ if ! command -v nvim >/dev/null 2>&1; then
   mv "$tmpfile" "$HOME/.local/bin/nvim"
   echo "Neovim AppImage installed as ~/.local/bin/nvim"
 
-  # Also clone gh copilot repo
-  git clone --depth=1 https://github.com/github/copilot.vim.git \
-  ~/.config/nvim/pack/github/start/copilot.vim
-
   # headless install wheee
   nvim --headless +Lazy! +qa
 fi
@@ -61,3 +57,12 @@ fi
 # Symlink
 ln -s "$NVIM_SRC" "$NVIM_DEST"
 echo "Symlinked nvim config from $NVIM_SRC to $NVIM_DEST"
+
+COPILOT_DEST="$HOME/.config/nvim/pack/github/start/copilot.vim"
+if [ ! -f "$COPILOT_DEST" ]; then
+  # Also clone gh copilot repo
+  git clone --depth=1 https://github.com/github/copilot.vim.git \
+    "$COPILOT_DEST"
+fi
+  
+
