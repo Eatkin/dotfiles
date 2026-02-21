@@ -37,5 +37,13 @@ REPO_DIR="$HOME/.reddit"
 REPO_NAME=$(basename "$REPO" .git)
 DEST="$REPO_DIR/$REPO_NAME"
 if [ -d "$DEST/venv" ]; then
-  export PATH="$PATH:$DEST/venv/bin"
+  # I have to do this because Textual/Asyncio completely hijack logging and dump a random app.log file wherever we are
+  reddit() {
+    (
+        REPO_DIR="$HOME/.reddit/reddit-cli"
+        cd "$REPO_DIR" || return 1  # go to repo root
+        source "$REPO_DIR/venv/bin/activate"  # activate venv
+        python app.py "$@"
+    )
+}
 fi
