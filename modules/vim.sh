@@ -41,6 +41,7 @@ if ! command -v nvim >/dev/null 2>&1; then
 
   # headless install wheee
   nvim --headless +Lazy! +qa
+  nvim --headless +"TSInstall python" +qa
 fi
 
 NVIM_SRC="$HOME/dotfiles/vim/nvim"

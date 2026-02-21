@@ -46,9 +46,24 @@ opt.whichwrap:append "<>[]hl"
 
 -- disable some default providers
 g.loaded_node_provider = 0
--- g.loaded_python3_provider = 0 
 g.loaded_perl_provider = 0
 g.loaded_ruby_provider = 0
+
+-- set python host - venv or otherwise
+local function get_python_host()
+  local cwd = vim.fn.getcwd()
+  local possible = { "venv", ".venv" }
+  for _, v in ipairs(possible) do
+    local pybin = cwd .. "/" .. v .. "/bin/python"
+    if vim.fn.filereadable(pybin) == 1 then
+      return pybin
+    end
+  end
+  -- fallback to system python
+  return vim.fn.trim(vim.fn.system("which python3"))
+end
+
+vim.g.python3_host_prog = get_python_host()
 
 -- add binaries installed by mason.nvim to path
 local is_windows = vim.fn.has "win32" ~= 0
