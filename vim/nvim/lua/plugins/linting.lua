@@ -11,14 +11,6 @@ return {
       python = { "pylint", "ruff", "mypy" },
       javascript = { "eslint_d" },
       typescript = { "eslint_d" },
-      css = { "prettier" },
-      html = { "prettier" },
-      json = { "prettier" },
-      yaml = { "prettier" },
-      markdown = { "prettier" },
-      graphql = { "prettier" },
-      lua = { "stylua" },
-      python = { "black" },     
     }
 
     local lint_augroup = vim.api.nvim_create_augroup("lint", { clear = true })
