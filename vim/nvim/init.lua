@@ -40,3 +40,6 @@ end)
 require("nvchad_core.options")
 require("nvchad_core.mappings")
 require("nvchad_core.plugins")
+
+-- LSP
+vim.lsp.enable('pyright')
