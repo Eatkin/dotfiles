@@ -13,6 +13,7 @@ repos: true
 templates: true
 desktop: true
 rss: true
+reddit: true
 
 dev-options:
   chromedriver: true

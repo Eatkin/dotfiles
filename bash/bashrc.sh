@@ -30,3 +30,12 @@ fi
 if [ -f "$HOME/dotfiles/bash/functions.sh" ]; then
     source "$HOME/dotfiles/bash/functions.sh"
 fi
+
+# Setup reddit cli if available
+REPO="git@github.com:Eatkin/reddit-cli.git"
+REPO_DIR="$HOME/.reddit"
+REPO_NAME=$(basename "$REPO" .git)
+DEST="$REPO_DIR/$REPO_NAME"
+if [ -d "$DEST/venv" ]; then
+  export PATH="$PATH:$DEST/venv/bin"
+fi

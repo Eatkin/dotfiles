@@ -60,6 +60,7 @@ REPOS=$(yq e '.repos' setup.yaml)
 TEMPLATES=$(yq e '.templates' setup.yaml)
 DESKTOP=$(yq e '.desktop' setup.yaml)
 RSS=$(yq e '.rss' setup.yaml)
+REDDIT=$(yq e '.reddit' setup.yaml)
 
 # Run modules based on YAML
 [ "$CORE" = "true" ] && bash modules/core.sh
@@ -76,6 +77,7 @@ RSS=$(yq e '.rss' setup.yaml)
 [ "$REPOS" = "true" ] && bash modules/repos.sh
 [ "$TEMPLATES" = "true" ] && bash modules/templates.sh
 [ "$DESKTOP" = "true" ] && bash modules/desktop.sh
+[ "$REDDIT" = "true" ] && bash modules/reddit.sh
 
 # Reload env
 unset DOTFILES_BASH_LOADED
