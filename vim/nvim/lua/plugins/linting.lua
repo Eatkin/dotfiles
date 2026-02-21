@@ -18,7 +18,7 @@ return {
       markdown = { "prettier" },
       graphql = { "prettier" },
       lua = { "stylua" },
-      python = { "isort", "black" },     
+      python = { "black" },     
     }
 
     local lint_augroup = vim.api.nvim_create_augroup("lint", { clear = true })
