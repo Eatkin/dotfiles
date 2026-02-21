@@ -46,24 +46,29 @@ fi
 
 NVIM_SRC="$HOME/dotfiles/vim/nvim"
 NVIM_DEST="$HOME/.config/nvim"
+BOOTSTRAP_MARKER="$NVIM_DEST/.bootstrapped"
 
-mkdir -p "$HOME/.config"
+if [ ! -f "$BOOTSTRAP_MARKER" ]; then
+  mkdir -p "$HOME/.config"
 
-# Backup any existing config
-if [ -L "$NVIM_DEST" ] || [ -d "$NVIM_DEST" ]; then
-  echo "Backing up existing nvim config..."
-  mv "$NVIM_DEST" "${NVIM_DEST}.bak.$(date +%s)"
+  # Backup any existing config
+  if [ -L "$NVIM_DEST" ] || [ -d "$NVIM_DEST" ]; then
+    echo "Backing up existing nvim config..."
+    mv "$NVIM_DEST" "${NVIM_DEST}.bak.$(date +%s)"
+  fi
+
+  # Symlink
+  ln -s "$NVIM_SRC" "$NVIM_DEST"
+  echo "Symlinked nvim config from $NVIM_SRC to $NVIM_DEST"
+
+  COPILOT_DEST="$HOME/.config/nvim/pack/github/start/copilot.vim"
+  if [ ! -d "$COPILOT_DEST" ]; then
+    # Also clone gh copilot repo
+    git clone --depth=1 https://github.com/github/copilot.vim.git \
+      "$COPILOT_DEST"
+  fi
+
+  touch "$BOOTSTRAP_MARKER"
 fi
-
-# Symlink
-ln -s "$NVIM_SRC" "$NVIM_DEST"
-echo "Symlinked nvim config from $NVIM_SRC to $NVIM_DEST"
-
-COPILOT_DEST="$HOME/.config/nvim/pack/github/start/copilot.vim"
-if [ ! -f "$COPILOT_DEST" ]; then
-  # Also clone gh copilot repo
-  git clone --depth=1 https://github.com/github/copilot.vim.git \
-    "$COPILOT_DEST"
-fi
-  
+    
 

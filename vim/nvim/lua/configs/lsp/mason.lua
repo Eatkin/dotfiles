@@ -26,7 +26,8 @@ return {
         "black",
         "pylint",
         "eslint_d",
-        "stylua"
+        "stylua",
+        "shfmt",
       },
     })
   end,

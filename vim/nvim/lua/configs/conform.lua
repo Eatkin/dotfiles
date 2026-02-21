@@ -10,6 +10,7 @@ local options = {
     yaml = { "prettier" },
     markdown = { "prettier" },
     graphql = { "prettier" },
+    bash = { "shfmt" }
   },
   format_on_save = {
     timeout_ms = 500,

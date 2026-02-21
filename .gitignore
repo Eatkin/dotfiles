@@ -3,3 +3,4 @@ bin/fd
 *.deb
 google-cloud-sdk
 vim/nvim/pack/*
+vim/nvim/.bootstrapped

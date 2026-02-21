@@ -47,6 +47,42 @@ if [ ! -d "$HOME/miniconda3" ]; then
     echo "Miniconda installed"
 fi
 
+# Python formatters/linters/etc
+PYTHON=$(command -v python3 || echo python)
+
+# Ensure pip is installed
+if ! "$PYTHON" -m pip --version >/dev/null 2>&1; then
+    echo "Installing pip..."
+    sudo apt install -y python3-pip
+fi
+
+# Tools to install
+PYTOOLS=(black mypy ruff pylint)
+
+for tool in "${PYTOOLS[@]}"; do
+    if ! "$PYTHON" -m pip show "$tool" >/dev/null 2>&1; then
+        echo "Installing $tool..."
+        "$PYTHON" -m pip install --user "$tool"
+    fi
+done
+
+# Node is (unfortunately) a requirement of pyright
+if ! command -v node >/dev/null 2>&1; then
+    echo "Installing NodeJS..."
+    sudo apt install -y nodejs npm
+fi
+
+if ! command -v pyright >/dev/null 2>&1; then
+    echo "Installing Pyright via npm..."
+    npm install -g pyright
+fi
+
+# shfmt for bash syntax highlighting
+if ! command -v shfmt >/dev/null 2>&1; then
+    echo "Installing shfmt..."
+    sudo apt install -y shfmt
+fi
+
 # Docker
 if ! command -v docker >/dev/null 2>&1; then
     echo "Installing Docker..."
@@ -72,7 +108,7 @@ if ! command -v docker >/dev/null 2>&1; then
     echo "Docker installed"
 fi
 
-# ChromeDriver is necessary
+# ChromeDriver if desired
 CHROMEDRIVER=$(yq e '.["dev-options"].chromedriver' setup.yaml)
 
 if [ "$CHROMEDRIVER" = "true" ]; then
@@ -105,3 +141,6 @@ if [ "$CHROMEDRIVER" = "true" ]; then
         echo "ChromeDriver installed at $BIN_DIR/chromedriver"
     fi
 fi
+
+# Formatting things
+
