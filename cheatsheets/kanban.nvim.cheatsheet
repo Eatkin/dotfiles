@@ -1,0 +1,27 @@
+space (leader)       : reserved for Kanban commands
+q                    : close Kanban board
+:w                   : save Kanban board
+<CR>                 : edit task description
+a                    : add new task to current column
+D                    : delete current task
+<C-t>                : toggle task complete
+<C-o>                : add new task (alternate key)
+
+-- Task movement (take between lists)
+H                    : take task left
+L                    : take task right
+K                    : take task up
+J                    : take task down
+
+-- Task navigation (move cursor)
+<C-h>                : move cursor left
+<C-l>                : move cursor right
+<C-k>                : move cursor up
+<C-j>                : move cursor down
+gg                   : move cursor to top
+G                    : move cursor to bottom
+
+-- List management
+<leader>la           : add new list
+<leader>lr           : rename current list
+<leader>ld           : delete current list
