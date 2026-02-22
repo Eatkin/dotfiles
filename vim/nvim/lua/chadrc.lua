@@ -6,6 +6,4 @@ M.base46 = {
     theme = "onedark",
 }
 
-pcall(require, "configs.telescope_toggle")
-
 return M
