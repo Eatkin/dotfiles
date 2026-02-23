@@ -142,5 +142,12 @@ if [ "$CHROMEDRIVER" = "true" ]; then
     fi
 fi
 
-# Formatting things
+# Cht.sh
+if ! command -v "cht.sh" > /dev/null 2>&1; then
+  echo "Installing cht.sh..."
+  PATH_DIR="$HOME/bin"  
+  mkdir -p "$PATH_DIR"
+  curl https://cht.sh/:cht.sh > "$PATH_DIR/cht.sh"
+  chmod +x "$PATH_DIR/cht.sh"
+fi
 

@@ -47,3 +47,6 @@ if [ -d "$DEST/venv" ]; then
     )
 }
 fi
+
+# Disable history expand
+set +o histexpand
