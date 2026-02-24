@@ -65,3 +65,13 @@ fi
 # Test glow
 glow --version || echo "Glow setup failed!"
 
+# Zoxide
+if ! command -v zoxide >/dev/null 2>&1; then
+  curl -sSfL https://raw.githubusercontent.com/ajeetdsouza/zoxide/main/install.sh | sh
+fi
+
+# fzf
+if ! command -v fzf > /dev/null 2>&1; then
+  git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
+  ~/.fzf/install --key-bindings --completion --no-update-rc
+fi

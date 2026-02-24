@@ -26,6 +26,18 @@ if [ -f "$HOME/miniconda3/etc/profile.d/conda.sh" ]; then
     . "$HOME/miniconda3/etc/profile.d/conda.sh"
 fi
 
+# Zoxide / fzf
+if command -v zoxide >/dev/null 2>&1; then
+  eval "$(zoxide init bash --cmd cd)"
+fi
+# FZF is a bit stupid in its install and installs to .fzf
+FZF_DIR="$HOME/.fzf" 
+if [ -d "$FZF_DIR" ]; then
+  export PATH="$PATH:$FZF_DIR/bin"
+  eval "$(fzf --bash)"
+
+fi
+
 # Load custom functions
 if [ -f "$HOME/dotfiles/bash/functions.sh" ]; then
     source "$HOME/dotfiles/bash/functions.sh"
