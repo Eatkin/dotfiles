@@ -62,3 +62,8 @@ fi
 
 # Disable history expand
 set +o histexpand
+
+# Vi mode
+set -o vi
+bind 'set show-mode-in-prompt on'
+bind 'set keyseq-timeout 0'
