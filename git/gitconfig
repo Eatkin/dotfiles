@@ -11,7 +11,7 @@
 [alias]
     s = status
     a = add
-    cm = commit
+    cm = commit -m
     co = checkout
     br = branch
     lg = log --oneline --graph --all --decorate
