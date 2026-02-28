@@ -22,3 +22,28 @@ vim.keymap.set("n", "<leader>to", ":tabonly<CR>", { desc = "Keep only this tab" 
 -- <leader>of is oil so <leader>o is super slow
 vim.keymap.set("n", "<leader>oo", "o<Esc>", { desc = "Open line below, stay normal" })
 vim.keymap.set("n", "<leader>O", "O<Esc>", { desc = "Open line above, stay normal" })
+
+-- Dump keymaps to file
+vim.api.nvim_create_user_command("DumpKeymaps", function()
+  local modes = { "n", "i", "v", "x", "s", "o", "t", "c" }
+  local lines = {}
+
+  for _, mode in ipairs(modes) do
+    local maps = vim.api.nvim_get_keymap(mode)
+
+    table.insert(lines, "==== MODE: " .. mode .. " ====")
+
+    for _, m in ipairs(maps) do
+      local lhs = m.lhs
+      local rhs = m.rhs or ""
+      local desc = m.desc or ""
+      table.insert(lines, string.format("%-15s → %-30s %s", lhs, rhs, desc))
+    end
+
+    table.insert(lines, "")
+  end
+
+  local path = vim.fn.stdpath "config" .. "/keymaps_dump.txt"
+  vim.fn.writefile(lines, path)
+  print("Keymaps written to: " .. path)
+end, {})

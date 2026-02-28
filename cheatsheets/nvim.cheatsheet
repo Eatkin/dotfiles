@@ -1,0 +1,309 @@
+BUFFERS
+
+<Tab> Next buffer
+<S-Tab> Previous buffer
+]b Next buffer
+[b Previous buffer
+[B First buffer
+]B Last buffer
+<leader>x Delete current buffer
+
+========================
+TABS (WORKSPACES)
+
+<leader>tn New tab
+<leader>tc Close tab
+<leader>to Close all other tabs
+
+========================
+WINDOW NAVIGATION
+
+<C-h> Move left one window
+<C-j> Move down one window
+<C-k> Move up one window
+<C-l> Move right one window
+
+========================
+TELESCOPE
+
+<leader>ff Find files
+<leader>fh Find files (hidden + ignored)
+<leader>fg Live grep
+<leader>fb Buffers list
+<leader>fr Recent files
+<leader>ds Diagnostics picker
+
+========================
+LSP - NAVIGATION
+
+gd Go to definition
+gi Go to implementation
+gr References
+gO Document symbols
+
+========================
+LSP - ACTIONS
+
+<leader>fm Format file
+<leader>l Lint file
+<C-S> (insert/select) Signature help
+
+========================
+DIAGNOSTICS
+
+[d Previous diagnostic
+]d Next diagnostic
+[D First diagnostic
+]D Last diagnostic
+<C-W>d Show diagnostic under cursor
+<leader>ds Diagnostics list (Telescope)
+
+========================
+COMMENTING
+
+<leader>/ Toggle current line (normal)
+
+========================
+FILE EXPLORER (OIL)
+
+<leader>of Toggle floating Oil
+<leader>uh Toggle hidden files
+
+========================
+TERMINALS
+
+<M-f> Floating terminal
+<M-l> Vertical terminal
+<M-h> Horizontal terminal
+<Esc><Esc> Exit terminal mode
+
+========================
+COMPLETION (NVIM-CMP)
+
+<C-Space> Trigger completion
+<CR> Confirm completion
+<Tab> Next item
+<S-Tab> Previous item
+<C-N> Next item
+<C-P> Previous item
+<C-E> Close completion
+<Up>/<Down> Navigate completion
+
+========================
+MATCHING / MATCHIT
+
+% Jump to matching pair
+g% Backward match
+[% Multi backward match
+]% Multi forward match
+a% (visual) Select matching block
+
+========================
+QUICKFIX / LOCATION LISTS
+
+[q Previous quickfix
+]q Next quickfix
+[Q First quickfix
+]Q Last quickfix
+[l Previous location
+]l Next location
+[L First location
+]L Last location
+
+========================
+EDITING ENHANCEMENTS
+
+<leader>O Insert line above (stay normal)
+<leader>oo Insert line below (stay normal)
+gx Open file or URL under cursor
+Y Yank to end of line
+<leader>qq Save session and quit all
+<leader>kb Toggle Project Kanban
+
+========================
+REPEAT & REDO
+
+. Repeat last change
+& Repeat last substitute
+:&& Repeat last substitute with same flags
+q: Open command-line history
+
+========================
+MACROS
+
+qa Start recording macro into register a
+q Stop recording
+@a Run macro in register a
+@@ Repeat last macro
+10@a Run macro 10 times
+
+Use uppercase to append:
+qA Append to macro register a
+
+========================
+REGISTERS
+
+"ayy Yank into register a
+:reg Show registers
+" show registers
+"+y Yank to system clipboard
+"+p Paste from system clipboard
+
+Black hole register:
+"_d Delete without yanking
+"_c Change without yanking
+"_x Delete char without yanking
+
+Expression register:
+<C-r>= Insert expression (insert mode)
+
+========================
+YANK HISTORY
+
+"0p Paste last yank (not delete)
+"1p Paste previous delete
+"2p ... Older deletes
+
+Note:
+Register 0 = last yank
+Registers 1-9 = delete history
+
+========================
+SEARCHING
+
+/pattern Search forward
+?pattern Search backward
+n Next match
+N Previous match
+
+* Search word under cursor forward
+# Search word under cursor backward
+
+g* Partial match forward
+g# Partial match backward
+
+:noh Clear search highlight
+
+:%s/foo/bar/g Replace in whole file
+:s/foo/bar/g Replace in line
+:%s/foo/bar/gc Replace with confirmation
+
+========================
+TEXT OBJECTS (POWER MOVES)
+
+Uncommon examples:
+ciw Change inner word
+caw Change around word
+dip Delete inner paragraph
+
+========================
+MOVING AROUND
+
+gg Top of file
+G Bottom of file
+50G Go to line 50
+% Jump to matching bracket
+
+[[ Previous function (start)
+]] Next function (start)
+[] Previous function (end)
+][ Next function (end)
+
+{ Previous paragraph
+} Next paragraph
+
+H Top of screen
+M Middle of screen
+L Bottom of screen
+
+zz Center cursor
+zt Cursor to top
+zb Cursor to bottom
+
+Ctrl-d Half-page down
+Ctrl-u Half-page up
+
+========================
+MARKS
+
+Lowercase marks (a–z) – file-local bookmarks
+<leader>ms<letter>   Set mark <letter> in current file
+<leader>mj<letter>   Jump to line of mark <letter>
+<leader>md<letter>   Delete mark <letter>
+
+Uppercase marks (A–Z) – global / cross-file bookmarks
+<leader>ms<LETTER>   Set mark <LETTER> in current buffer (persists across files)
+<leader>mj<LETTER>   Jump to line of mark <LETTER>
+<leader>md<LETTER>   Delete mark <LETTER>
+
+All user marks
+<leader>ml           Open Telescope picker showing marks
+
+Delete all marks
+<leader>md! Delete all local marks
+<leader>mgd! Delete all global marks
+
+Vim native navigation
+'a           Jump to line of mark a
+`a           Jump to exact position of mark a
+''           Jump back to previous jump
+``         Jump to last position
+
+Other
+:marks       Show all marks (including special and numbered marks)
+md!          Delete all a–z and A–Z marks
+
+========================
+UNDO TREE
+
+u Undo
+Ctrl-r Redo
+:earlier 5m Go 5 minutes back
+:later 10s Go 10 seconds forward
+
+========================
+VISUAL BLOCK
+
+Ctrl-v Enter visual block
+I Insert at start of block
+A Append at end of block
+
+========================
+QUICKFIX
+
+:copen Open quickfix
+:cclose Close quickfix
+:cnext Next item
+:cprev Previous item
+
+========================
+FOLDS
+
+za Toggle fold
+zR Open all folds
+zM Close all folds
+zc Close fold
+zo Open fold
+
+========================
+FILE EXPLORATION
+
+gf Go to file under cursor
+gx Open URL under cursor
+
+========================
+WINDOW RESIZING
+
+Ctrl-w + Increase height
+Ctrl-w - Decrease height
+Ctrl-w > Increase width
+Ctrl-w < Decrease width
+Ctrl-w = Equalise windows
+
+========================
+INSERT MODE SHORTCUTS
+
+Ctrl-o Execute one normal command
+Ctrl-w Delete previous word
+Ctrl-u Delete to start of line
+Ctrl-r{reg} Insert register
