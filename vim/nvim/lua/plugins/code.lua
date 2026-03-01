@@ -17,7 +17,8 @@ return {
 					"html",
 					"emmet_ls",
 					"lua_ls",
-          "bash-language-server"
+          "bash-language-server",
+          "yaml-language-server"
 				},
 				automatic_installation = true,
 			})
@@ -79,6 +80,8 @@ return {
 			vim.lsp.config("html", { capabilities = capabilities })
 			vim.lsp.config("cssls", { capabilities = capabilities })
 			vim.lsp.config("emmet_ls", { capabilities = capabilities })
+			vim.lsp.config("bash-language-server", { capabilities = capabilities })
+			vim.lsp.config("yaml-language-server", { capabilities = capabilities })
 
 			-- Enable them
 			vim.lsp.enable({
@@ -87,6 +90,8 @@ return {
 				"html",
 				"cssls",
 				"emmet_ls",
+        "bash-language-server",
+        "yaml-language-server"
 			})
 		end,
 	},
