@@ -17,6 +17,7 @@ return {
 					"html",
 					"emmet_ls",
 					"lua_ls",
+          "bash-language-server"
 				},
 				automatic_installation = true,
 			})

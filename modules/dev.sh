@@ -2,7 +2,7 @@
 set -e
 
 echo "Installing dev packages..."
-CORE_PACKAGES=(caffeine direnv openjdk-17-jdk maven)
+CORE_PACKAGES=(caffeine direnv openjdk-17-jdk maven shellcheck)
 for pkg in "${CORE_PACKAGES[@]}"; do
     if ! command -v "$pkg" >/dev/null 2>&1; then
         if ! sudo apt install -y "$pkg"; then

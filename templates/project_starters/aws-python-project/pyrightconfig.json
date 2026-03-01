@@ -1,0 +1,13 @@
+{
+  "typeCheckingMode": "basic",
+  "include": [
+    "services",
+    "common",
+    "tools",
+    "infra/cdk"
+  ],
+  "extraPaths": [
+    "common",
+    "services/service_a"
+  ]
+}

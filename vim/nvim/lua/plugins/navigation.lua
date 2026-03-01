@@ -108,7 +108,19 @@ return {
       vim.keymap.set("n", "gr", builtin.lsp_references, { desc = "LSP references" })
       vim.keymap.set("n", "gd", builtin.lsp_definitions, { desc = "LSP definitions" })
       vim.keymap.set("n", "gi", builtin.lsp_implementations, { desc = "LSP implementations" })
-      vim.keymap.set("n", "<leader>ds", builtin.diagnostics, { desc = "Diagnostics picker" })
+      vim.keymap.set("n", "<leader>ds", function()
+        builtin.diagnostics {
+          layout_strategy = "vertical",
+          layout_config = {
+            width = 0.95,
+            height = 0.9,
+            preview_height = 0.5,
+            preview_cutoff = 0,
+          },
+          wrap_results = true,
+          sorting_strategy = "ascending",
+        }
+      end, { desc = "Diagnostics picker" })
     end,
   },
 }
