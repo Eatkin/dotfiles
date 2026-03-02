@@ -10,8 +10,14 @@ map("n", "<C-l>", "<C-w>l", opts)
 -- Cycle buffers
 vim.keymap.set("n", "<Tab>", ":bnext<CR>", { desc = "Next buffer" })
 vim.keymap.set("n", "<S-Tab>", ":bprev<CR>", { desc = "Previous buffer" })
--- Close current buffer
-vim.keymap.set("n", "<leader>x", ":bdelete<CR>", { desc = "Close buffer" })
+-- Closes the current buffer but keeps the window and tab layout intact
+vim.keymap.set("n", "<leader>x", function()
+    local current_buf = vim.api.nvim_get_current_buf()
+    -- Switch to the previous buffer in the list first
+    vim.cmd("bprevious")
+    -- Delete the buffer we were just on
+    vim.cmd("confirm bdelete " .. current_buf)
+end, { desc = "Close buffer" })
 
 -- Tabs
 vim.keymap.set("n", "<leader>tn", ":tabnew<CR>", { desc = "New tab / workspace" })
