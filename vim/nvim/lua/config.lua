@@ -67,6 +67,7 @@ vim.opt.rtp:prepend(lazypath)
 
 require("lazy").setup {
   require "plugins.theme",
+  require "plugins.ui",
   require "plugins.navigation",
   require "plugins.buffers",
   require "plugins.comment",
@@ -75,6 +76,24 @@ require("lazy").setup {
   require "plugins.terminal",
   require "plugins.kanban",
 }
+
+-- Load past loaded theme
+local function load_persisted_theme()
+  local path = vim.fn.stdpath("data") .. "/last_theme"
+
+  if vim.fn.filereadable(path) == 1 then
+    local theme = vim.fn.readfile(path)[1]
+    if theme and theme ~= "" then
+      vim.cmd("colorscheme " .. theme)
+      return
+    end
+  end
+
+  -- fallback theme if none saved
+  vim.cmd("colorscheme nightfox")
+end
+
+load_persisted_theme()
 
 -- Set up Kanban controls - creates .kanban.md in root when used
 local kanban_state = {
@@ -116,3 +135,5 @@ local function toggle_project_kanban()
 end
 
 vim.keymap.set("n", "<leader>kb", toggle_project_kanban, { desc = "Toggle Project Kanban" })
+
+require "themes.picker"
