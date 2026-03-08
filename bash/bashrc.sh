@@ -8,22 +8,22 @@ done
 
 # Git completions
 if [ -f /usr/share/bash-completion/completions/git ]; then
-    source /usr/share/bash-completion/completions/git
+  source /usr/share/bash-completion/completions/git
 fi
 
 # Direnv hook
 if command -v direnv >/dev/null 2>&1; then
-    eval "$(direnv hook bash)"
+  eval "$(direnv hook bash)"
 fi
 
 # Miniconda PATH
 if [ -d "$HOME/miniconda3/bin" ] && [[ ":$PATH:" != *":$HOME/miniconda3/bin:"* ]]; then
-    export PATH="$HOME/miniconda3/bin:$PATH"
+  export PATH="$HOME/miniconda3/bin:$PATH"
 fi
 
 # Initialise conda for shell sessions
 if [ -f "$HOME/miniconda3/etc/profile.d/conda.sh" ]; then
-    . "$HOME/miniconda3/etc/profile.d/conda.sh"
+  . "$HOME/miniconda3/etc/profile.d/conda.sh"
 fi
 
 # Zoxide / fzf
@@ -31,16 +31,21 @@ if command -v zoxide >/dev/null 2>&1; then
   eval "$(zoxide init bash --cmd cd)"
 fi
 # FZF is a bit stupid in its install and installs to .fzf
-FZF_DIR="$HOME/.fzf" 
+FZF_DIR="$HOME/.fzf"
 if [ -d "$FZF_DIR" ]; then
   export PATH="$PATH:$FZF_DIR/bin"
   eval "$(fzf --bash)"
 
 fi
 
+# Completion for aws cli
+if command -v aws >/dev/null 2>&1; then
+  complete -C '/usr/local/bin/aws_completer' aws
+fi
+
 # Load custom functions
 if [ -f "$HOME/dotfiles/bash/functions.sh" ]; then
-    source "$HOME/dotfiles/bash/functions.sh"
+  source "$HOME/dotfiles/bash/functions.sh"
 fi
 
 # Setup reddit cli if available
@@ -52,12 +57,12 @@ if [ -d "$DEST/venv" ]; then
   # I have to do this because Textual/Asyncio completely hijack logging and dump a random app.log file wherever we are
   reddit() {
     (
-        REPO_DIR="$HOME/.reddit/reddit-cli"
-        cd "$REPO_DIR" || return 1  # go to repo root
-        source "$REPO_DIR/venv/bin/activate"  # activate venv
-        python app.py "$@"
+      REPO_DIR="$HOME/.reddit/reddit-cli"
+      cd "$REPO_DIR" || return 1           # go to repo root
+      source "$REPO_DIR/venv/bin/activate" # activate venv
+      python app.py "$@"
     )
-}
+  }
 fi
 
 # Disable history expand
