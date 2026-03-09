@@ -7,16 +7,16 @@ media: true
 media-optional: true
 latex: true
 network: true
-data: true
-gaming: true
-repos: true
+data: false
+gaming: false
+repos: false
 templates: true
-desktop: true
-rss: true
+desktop: false
+rss: false
 reddit: true
 
 dev-options:
-  chromedriver: true
+  chromedriver: false
 
 gaming-options:
   steam: true

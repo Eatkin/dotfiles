@@ -127,12 +127,18 @@ return {
           python = { "isort", "black" },
           lua = { "stylua" },
           javascript = { "prettier" },
+          typescript = { "prettier" },
           html = { "prettier", "djlint" },
           css = { "prettier" },
           sh = { "shfmt" },
+          toml = { "pyproject-fmt" },
+        },
+        formatters = {
+          black = {
+            prepend_args = { "--preview", "--enable-unstable-feature", "string_processing" },
+          },
         },
       }
-
       vim.keymap.set("n", "<leader>fm", function()
         require("conform").format { async = true }
       end, { desc = "Format file" })
@@ -148,6 +154,7 @@ return {
       lint.linters_by_ft = {
         python = { "ruff", "mypy" },
         javascript = { "eslint_d" },
+        typescript = { "eslint_d" },
         html = { "djlint" },
       }
 

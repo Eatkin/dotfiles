@@ -6,6 +6,7 @@ set -euo pipefail
 
 TEMPLATE_TYPE=$1
 DEST_PATH="$HOME/code/projects/$2"
+mkdir -p "$DEST_PATH"
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PYPROJECT_TEMPLATE="$SCRIPT_DIR/pyproject/pyproject.toml"
 README_TEMPLATE="$SCRIPT_DIR/README.md"

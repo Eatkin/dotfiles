@@ -62,7 +62,8 @@ PYTOOLS=(black mypy ruff pylint)
 for tool in "${PYTOOLS[@]}"; do
     if ! "$PYTHON" -m pip show "$tool" >/dev/null 2>&1; then
         echo "Installing $tool..."
-        "$PYTHON" -m pip install --user "$tool"
+        pipx install "$tool"
+        # "$PYTHON" -m pip install --user "$tool"
     fi
 done
 
