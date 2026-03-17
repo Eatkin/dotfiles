@@ -2,18 +2,17 @@
 set -e
 
 if ! sudo -v; then
-    echo "You need sudo privileges to run this bootstrap script."
-    exit 1
+  echo "You need sudo privileges to run this bootstrap script."
+  exit 1
 fi
 
 echo "Bootstrap starting..."
 echo "Edit setup.yaml to enable components."
 
 BASHRC="$HOME/.bashrc"
-MARKER_START="# >>> dotfiles bootstrap >>>"
-MARKER_END="# <<< dotfiles bootstrap <<<"
 
-BLOCK=$(cat <<'EOF'
+BLOCK=$(
+  cat <<'EOF'
 # >>> dotfiles bootstrap >>>
 [ -f "$HOME/dotfiles/bash/bashrc.sh" ] && source "$HOME/dotfiles/bash/bashrc.sh"
 # <<< dotfiles bootstrap <<<
@@ -26,22 +25,22 @@ fi
 
 # Don't do this twice
 if ! grep -q "dotfiles/bash/bashrc.sh" "$BASHRC"; then
-  echo "" >> "$BASHRC"
-  echo "$BLOCK" >> "$BASHRC"
+  echo "" >>"$BASHRC"
+  echo "$BLOCK" >>"$BASHRC"
   echo "Added dotfiles bootstrap to .bashrc"
 fi
 
 # Install snap if missing
 if ! command -v snap >/dev/null 2>&1; then
-    echo "Snap not found, installing snapd..."
-    sudo apt update
-    sudo apt install -y snapd
+  echo "Snap not found, installing snapd..."
+  sudo apt update
+  sudo apt install -y snapd
 fi
 
 # Load YAML parser
 if ! command -v yq >/dev/null 2>&1; then
-    echo "Installing yq for YAML parsing..."
-    sudo snap install yq
+  echo "Installing yq for YAML parsing..."
+  sudo snap install yq
 fi
 
 # Read setup.yaml
@@ -55,7 +54,6 @@ LATEX=$(yq e '.latex' setup.yaml)
 DATA=$(yq e '.data' setup.yaml)
 NETWORK=$(yq e '.network' setup.yaml)
 GAMING=$(yq e '.gaming' setup.yaml)
-PERSONAL=$(yq e '.personal' setup.yaml)
 REPOS=$(yq e '.repos' setup.yaml)
 TEMPLATES=$(yq e '.templates' setup.yaml)
 DESKTOP=$(yq e '.desktop' setup.yaml)
