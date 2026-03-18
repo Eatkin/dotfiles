@@ -1,4 +1,5 @@
 return {
+
   -- MASON
   {
     "williamboman/mason.nvim",
@@ -19,6 +20,8 @@ return {
           "lua_ls",
           "bash-language-server",
           "yaml-language-server",
+          "asm-lsp",
+          "jinja-lsp",
         },
         automatic_installation = true,
       }
@@ -47,13 +50,14 @@ return {
           "html",
           "cssls",
           "emmet_ls",
+          "asm-lsp",
+          "jinja-lsp",
         },
         automatic_installation = true,
       }
 
       local capabilities = cmp_lsp.default_capabilities()
 
-      -- New 0.11 native API
       vim.lsp.config("lua_ls", {
         capabilities = capabilities,
         settings = {
@@ -83,6 +87,8 @@ return {
       vim.lsp.config("bash-language-server", { capabilities = capabilities })
       vim.lsp.config("yaml-language-server", { capabilities = capabilities })
       vim.lsp.config("typescript-language-server", { capabilities = capabilities })
+      vim.lsp.config("asm-lsp", { capabilities = capabilities })
+      vim.lsp.config("jinja-lsp", { capabilities = capabilities })
 
       -- Enable them
       vim.lsp.enable {
@@ -94,6 +100,8 @@ return {
         "bash-language-server",
         "yaml-language-server",
         "typescript-language-server",
+        "asm-lsp",
+        "jinja-lsp",
       }
     end,
   },
@@ -132,6 +140,7 @@ return {
           css = { "prettier" },
           sh = { "shfmt" },
           toml = { "pyproject-fmt" },
+          asm = { "asmfmt" },
         },
         formatters = {
           black = {
@@ -216,4 +225,10 @@ return {
       }
     end,
   },
+
+  vim.filetype.add({
+    extension = {
+      asm = "nasm",
+    }
+  })
 }
