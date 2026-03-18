@@ -79,7 +79,7 @@ require("lazy").setup {
 
 -- Load past loaded theme
 local function load_persisted_theme()
-  local path = vim.fn.stdpath("data") .. "/last_theme"
+  local path = vim.fn.stdpath "data" .. "/last_theme"
 
   if vim.fn.filereadable(path) == 1 then
     local theme = vim.fn.readfile(path)[1]
@@ -90,7 +90,7 @@ local function load_persisted_theme()
   end
 
   -- fallback theme if none saved
-  vim.cmd("colorscheme nightfox")
+  vim.cmd "colorscheme nightfox"
 end
 
 load_persisted_theme()
@@ -107,7 +107,7 @@ local function open_project_kanban()
 
   -- Create if missing
   if vim.fn.filereadable(filepath) == 0 then
-    vim.cmd("KanbanCreate .kanban")
+    vim.cmd "KanbanCreate .kanban"
   end
 
   -- Always open explicitly
@@ -121,7 +121,7 @@ local function close_project_kanban()
   if kanban_state.winid and vim.api.nvim_win_is_valid(kanban_state.winid) then
     -- Focus the kanban window
     vim.api.nvim_set_current_win(kanban_state.winid)
-    vim.cmd("KanbanClose")
+    vim.cmd "KanbanClose"
     kanban_state.winid = nil
   end
 end
@@ -137,3 +137,18 @@ end
 vim.keymap.set("n", "<leader>kb", toggle_project_kanban, { desc = "Toggle Project Kanban" })
 
 require "themes.picker"
+
+-- Fold options
+vim.opt.foldmethod = "expr"
+vim.opt.foldexpr = "v:lua.vim.lsp.foldexpr()"
+vim.opt.foldlevel = 99
+vim.opt.foldlevelstart = 99
+vim.opt.foldenable = true
+-- Auto setup folds on buffer enter
+vim.api.nvim_create_autocmd("BufWinEnter", {
+  pattern = "*",
+  callback = function()
+    vim.opt_local.foldmethod = "expr"
+    vim.opt_local.foldexpr = "v:lua.vim.treesitter.foldexpr()"
+  end,
+})
