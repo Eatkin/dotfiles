@@ -14,7 +14,7 @@ if ! command -v gforth >/dev/null 2>&1; then
 fi
 
 if ! command -v nasm >/dev/null 2>&1; then
-  sudo apt install -y nasm gcc gbd
+  sudo apt install -y nasm gcc gdb
   echo "nasm installed"
   # pwndbg
   curl --proto '=https' --tlsv1.2 -LsSf 'https://install.pwndbg.re' | sh -s -- -t pwndbg-gdb
