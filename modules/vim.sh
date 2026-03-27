@@ -71,4 +71,10 @@ if [ ! -f "$BOOTSTRAP_MARKER" ]; then
   touch "$BOOTSTRAP_MARKER"
 fi
     
+# Treesitter CLI required for treesitter to actually work
+if ! command -v "cargo" >/dev/null 2>&1; then
+  echo "Installing rust for cargo..."
+  curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+fi
 
+cargo install --locked tree-sitter-cli

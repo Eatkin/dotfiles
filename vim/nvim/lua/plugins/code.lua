@@ -22,6 +22,7 @@ return {
           "yaml-language-server",
           "asm-lsp",
           "jinja-lsp",
+          "svelte-language-server",
         },
         automatic_installation = true,
       }
@@ -52,6 +53,7 @@ return {
           "emmet_ls",
           "asm-lsp",
           "jinja-lsp",
+          "svelte-language-server",
         },
         automatic_installation = true,
       }
@@ -89,6 +91,7 @@ return {
       vim.lsp.config("typescript-language-server", { capabilities = capabilities })
       vim.lsp.config("asm-lsp", { capabilities = capabilities })
       vim.lsp.config("jinja-lsp", { capabilities = capabilities })
+      vim.lsp.config("svelte-language-server", { capabilities = capabilities })
 
       -- Enable them
       vim.lsp.enable {
@@ -102,6 +105,7 @@ return {
         "typescript-language-server",
         "asm-lsp",
         "jinja-lsp",
+        "svelte",
       }
     end,
   },
@@ -122,6 +126,7 @@ return {
         "html",
         "css",
         "bash",
+        "svelte",
       }
     end,
   },
@@ -136,6 +141,7 @@ return {
           lua = { "stylua" },
           javascript = { "prettier" },
           typescript = { "prettier" },
+          svelte = { "prettier" },
           html = { "prettier", "djlint" },
           css = { "prettier" },
           sh = { "shfmt" },
@@ -164,6 +170,7 @@ return {
         python = { "ruff", "mypy" },
         javascript = { "eslint_d" },
         typescript = { "eslint_d" },
+        svelte = { "eslint_d" },
         html = { "djlint" },
       }
 
@@ -226,9 +233,9 @@ return {
     end,
   },
 
-  vim.filetype.add({
+  vim.filetype.add {
     extension = {
       asm = "nasm",
-    }
-  })
+    },
+  },
 }

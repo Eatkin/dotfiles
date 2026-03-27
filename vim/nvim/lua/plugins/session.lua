@@ -54,6 +54,17 @@ return {
 			vim.keymap.set("n", "<leader>qq", function()
 				vim.cmd("NukeQuit")
 			end, { desc = "Save session and quit all" })
+
+			-- Nuclear save: As above but no quit
+			vim.api.nvim_create_user_command("NukeSave", function()
+				vim.cmd("wall")
+				vim.cmd("PossessionSaveCwd!")
+			end, { desc = "Write all and save session" })
+
+			-- Keybind <leader>ww
+			vim.keymap.set("n", "<leader>ww", function()
+				vim.cmd("NukeSave")
+			end, { desc = "Save session" })
 		end,
 	},
 }

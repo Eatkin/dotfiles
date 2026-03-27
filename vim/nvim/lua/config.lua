@@ -152,3 +152,10 @@ vim.api.nvim_create_autocmd("BufWinEnter", {
     vim.opt_local.foldexpr = "v:lua.vim.treesitter.foldexpr()"
   end,
 })
+
+
+-- Scratch buffer support
+local scratch = require('custom.scratch')
+vim.keymap.set('n', '<leader>sb', scratch.toggle, { desc = 'Toggle scratch buffer' })
+local diag = require('custom.diagnostics')
+vim.keymap.set('n', '<leader>dx', diag.open, { desc = 'Open diagnostics buffer for current file' })
