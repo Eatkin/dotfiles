@@ -16,3 +16,5 @@
     br = branch
     lg = log --oneline --graph --all --decorate
 
+[diff]
+        external = difft
