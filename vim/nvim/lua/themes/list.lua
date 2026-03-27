@@ -20,6 +20,7 @@ M.themes = {
   "modus_operandi",
   "modus_vivendi",
   "fluoromachine",
+  "templeos",
 }
 
 return M

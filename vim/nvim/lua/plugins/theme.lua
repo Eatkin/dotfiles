@@ -17,7 +17,6 @@ return {
   },
   {
     "folke/tokyonight.nvim",
-    lazy = false,
     priority = 1000,
     opts = {},
   },
@@ -25,18 +24,21 @@ return {
     "miikanissi/modus-themes.nvim",
     priority = 1000,
   },
-    {
-        'maxmx03/fluoromachine.nvim',
-        lazy = false,
-        priority = 1000,
-        config = function ()
-         local fm = require 'fluoromachine'
+  {
+    "maxmx03/fluoromachine.nvim",
+    priority = 1000,
+    config = function()
+      local fm = require "fluoromachine"
 
-         fm.setup {
-            glow = true,
-            theme = 'fluoromachine',
-            transparent = true,
-         }
-        end
-    }
+      fm.setup {
+        glow = true,
+        theme = "fluoromachine",
+        transparent = true,
+      }
+    end,
+  },
+  {
+    "lunarvim/templeos.nvim",
+    priority = 1000,
+  },
 }
