@@ -22,8 +22,8 @@ fi
 if ! command -v nvim >/dev/null 2>&1; then
   echo "Installing neovim..."
   latest_json=$(curl -s "https://api.github.com/repos/neovim/neovim/releases/latest")
-  appimage_url=$(echo "${latest_json}" \
-    | jq -r '.assets[] | select(.name | test("nvim-linux-x86_64.appimage$")) | .browser_download_url')
+  appimage_url=$(echo "${latest_json}" |
+    jq -r '.assets[] | select(.name | test("nvim-linux-x86_64.appimage$")) | .browser_download_url')
 
   if [[ -z "$appimage_url" ]]; then
     echo "❌ Could not find nvim-linux-x86_64.appimage in latest release"
@@ -70,11 +70,13 @@ if [ ! -f "$BOOTSTRAP_MARKER" ]; then
 
   touch "$BOOTSTRAP_MARKER"
 fi
-    
+
 # Treesitter CLI required for treesitter to actually work
 if ! command -v "cargo" >/dev/null 2>&1; then
   echo "Installing rust for cargo..."
   curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
 fi
 
-cargo install --locked tree-sitter-cli
+if ! command -v "tree-sitter" >/dev/null 2>&1; then
+  cargo install --locked tree-sitter-cli
+fi

@@ -18,20 +18,20 @@ if ! command -v gh >/dev/null 2>&1; then
 fi
 
 # VSCode
-if ! command -v code >/dev/null 2>&1; then
-  echo "Installing VS Code..."
-  wget -qO ~/vscode.deb "https://code.visualstudio.com/sha/download?build=stable&os=linux-deb-x64"
-  sudo apt install -y ~/vscode.deb
-  rm ~/vscode.deb
-fi
+# if ! command -v code >/dev/null 2>&1; then
+#   echo "Installing VS Code..."
+#   wget -qO ~/vscode.deb "https://code.visualstudio.com/sha/download?build=stable&os=linux-deb-x64"
+#   sudo apt install -y ~/vscode.deb
+#   rm ~/vscode.deb
+# fi
 
-echo "Installing VS Code extensions..."
-while read -r ext; do
-  if ! code --list-extensions | grep -q "^$ext$"; then
-    code --install-extension "$ext"
-    echo "✓ Installed $ext"
-  fi
-done <~/dotfiles/etc/vscode-extensions.txt
+# echo "Installing VS Code extensions..."
+# while read -r ext; do
+#   if ! code --list-extensions | grep -q "^$ext$"; then
+#     code --install-extension "$ext"
+#     echo "✓ Installed $ext"
+#   fi
+# done <~/dotfiles/etc/vscode-extensions.txt
 
 echo "Synchronising settings"
 VSCODE_SETTINGS="$HOME/.config/Code/User/settings.json"

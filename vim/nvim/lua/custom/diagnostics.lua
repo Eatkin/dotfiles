@@ -26,7 +26,9 @@ local function format_diagnostics()
   for _, d in ipairs(diagnostics) do
     local sev = severity_labels[d.severity] or "?    "
     local source = d.source and ("[" .. d.source .. "] ") or ""
-    table.insert(lines, string.format("%s  line %d:%d  %s%s", sev, d.lnum + 1, d.col, source, d.message))
+    local line = string.format("%s  line %d:%d  %s%s", sev, d.lnum + 1, d.col, source, d.message)
+    line = string.gsub(line, "\n", "")
+    table.insert(lines, line)
   end
   return lines
 end
