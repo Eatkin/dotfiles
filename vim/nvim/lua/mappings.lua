@@ -12,11 +12,11 @@ vim.keymap.set("n", "<Tab>", ":bnext<CR>", { desc = "Next buffer" })
 vim.keymap.set("n", "<S-Tab>", ":bprev<CR>", { desc = "Previous buffer" })
 -- Closes the current buffer but keeps the window and tab layout intact
 vim.keymap.set("n", "<leader>x", function()
-    local current_buf = vim.api.nvim_get_current_buf()
-    -- Switch to the previous buffer in the list first
-    vim.cmd("bprevious")
-    -- Delete the buffer we were just on
-    vim.cmd("confirm bdelete " .. current_buf)
+  local current_buf = vim.api.nvim_get_current_buf()
+  -- Switch to the previous buffer in the list first
+  vim.cmd "bprevious"
+  -- Delete the buffer we were just on
+  vim.cmd("confirm bdelete " .. current_buf)
 end, { desc = "Close buffer" })
 
 -- Tabs
@@ -28,6 +28,9 @@ vim.keymap.set("n", "<leader>to", ":tabonly<CR>", { desc = "Keep only this tab" 
 -- <leader>of is oil so <leader>o is super slow
 vim.keymap.set("n", "<leader>oo", "o<Esc>", { desc = "Open line below, stay normal" })
 vim.keymap.set("n", "<leader>O", "O<Esc>", { desc = "Open line above, stay normal" })
+
+-- Toggle wrap
+vim.keymap.set("n", "<A-z>", ":set wrap!<CR>", { desc = "Toggle word wrap" })
 
 -- Dump keymaps to file
 vim.api.nvim_create_user_command("DumpKeymaps", function()
