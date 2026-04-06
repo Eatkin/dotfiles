@@ -3,8 +3,14 @@ _yt_token() {
   local client_secret="$config/client_secret.json"
   local refresh_token_file="$config/refresh_token"
 
-  [[ ! -f "$client_secret" ]] && { echo "missing $client_secret" >&2; return 1; }
-  [[ ! -f "$refresh_token_file" ]] && { echo "missing $refresh_token_file - run youtube-auth" >&2; return 1; }
+  [[ ! -f "$client_secret" ]] && {
+    echo "missing $client_secret" >&2
+    return 1
+  }
+  [[ ! -f "$refresh_token_file" ]] && {
+    echo "missing $refresh_token_file - run youtube-auth" >&2
+    return 1
+  }
 
   local client_id client_secret_val refresh_token
   client_id=$(jq -r '.installed.client_id' "$client_secret")
@@ -12,8 +18,8 @@ _yt_token() {
   refresh_token=$(cat "$refresh_token_file")
 
   curl -sf -X POST "https://oauth2.googleapis.com/token" \
-    -d "client_id=${client_id}&client_secret=${client_secret_val}&refresh_token=${refresh_token}&grant_type=refresh_token" \
-    | jq -r '.access_token'
+    -d "client_id=${client_id}&client_secret=${client_secret_val}&refresh_token=${refresh_token}&grant_type=refresh_token" |
+    jq -r '.access_token'
 }
 
 ytsync() {
@@ -48,7 +54,7 @@ ytsync() {
     [[ -z "$page_token" ]] && break
   done
 
-  echo "$all_items" > "$subs_file"
+  echo "$all_items" >"$subs_file"
   echo "saved $(echo "$all_items" | jq 'length') subscriptions to $subs_file"
 }
 
@@ -58,7 +64,7 @@ _yt_parse_rss() {
   local url="https://www.youtube.com/feeds/videos.xml?channel_id=${channel_id}"
 
   local xml
-  xml=$(curl -sf "$url") || return 0  # silently skip dead channels
+  xml=$(curl -sf "$url") || return 0 # silently skip dead channels
 
   python3 - <<EOF
 import xml.etree.ElementTree as ET
@@ -97,42 +103,61 @@ ytfetch() {
   local subs_file="$config/subs.json"
   local cache_file="$config/feed_cache.json"
 
-  [[ ! -f "$subs_file" ]] && { echo "no subs cache, run ytsync first"; return 1; }
+  [[ ! -f "$subs_file" ]] && {
+    echo "no subs cache"
+    return 1
+  }
 
   echo "fetching RSS feeds..."
 
   local results
-  results=$(jq -r '.[] | .channel_id + " " + .name' "$subs_file" \
-    | xargs -P 20 -I {} bash -c '_yt_parse_rss $@' _ {})
+  results=$(jq -r '.[] | "\(.channel_id)|\(.name)"' "$subs_file" |
+    xargs -P 20 -d$'\n' -I {} bash -c '
+      IFS="|" read -r id name <<< "{}"
+      _yt_parse_rss "$id" "$name"
+    ')
 
-  # sort by published date, newest first, save as json array
-  echo "$results" \
-    | jq -s 'sort_by(.published) | reverse' \
-    > "$cache_file"
-
+  echo "$results" | jq -s 'sort_by(.published) | reverse' >"$cache_file"
   echo "cached $(jq 'length' "$cache_file") videos to $cache_file"
 }
 
+export -f _yt_parse_rss
+export -f ytfetch
+
+_gen_list() {
+  local cache_file="$HOME/.config/youtube/feed_cache.json"
+  jq -r '.[] | "\(.published[:10])\t\(.channel)\t\(.title)\t\(.url)"' "$cache_file"
+}
+export -f _gen_list
+
 ytfeed() {
-  local config=~/.config/youtube
-  local cache_file="$config/feed_cache.json"
-  local limit="${1:-50}"
+  local cache_file="$HOME/.config/youtube/feed_cache.json"
 
-  [[ ! -f "$cache_file" ]] && { echo "no feed cache, run ytfetch first"; return 1; }
+local selected=$(_gen_list |
+    fzf --ansi \
+      --header "CTRL+j/k / arrow keys: Move | CTRL+R: Reload feed | CTRL-U/D: Scroll Preview | ENTER: Play | ESC: Quit" \
+      --delimiter $'\t' \
+      --with-nth 1..3 \
+      --preview 'echo -e "Date: {1}\nChannel: {2}\nTitle: {3}\n\nURL: {4}"' \
+      --bind "ctrl-r:reload(bash -c 'ytfetch > /dev/null 2>&1 && _gen_list')" \
+      --bind "ctrl-u:half-page-up" \
+      --bind "ctrl-d:half-page-down" \
+      --bind "q:abort" \
+      --bind "ctrl-j:down" \
+      --bind "ctrl-k:up")
 
-  echo
-  echo -e "\033[1;31m▶ youtube feed\033[0m"
-  echo "────────────────────────────────────────"
-
-  jq -r --argjson n "$limit" '
-    .[:$n][] |
-    "\(.channel)\t\(.published[:10])\t\(.title)\t\(.url)"
-  ' "$cache_file" | awk -F'\t' '{
-    printf "\033[2m%s\033[0m \033[1;31m%-25s\033[0m\n\033[1;37m%s\033[0m\n\033[2m%s\033[0m\n\n", $2, $1, $3, $4
-  }' | less -R
+  if [[ -n "$selected" ]]; then
+    # Grab the 4th tab-separated field (the URL)
+    local url=$(echo "$selected" | cut -f4)
+    echo "Playing: $url"
+    mpv-yt "$url"
+  fi
 }
 
 mpv-yt() {
-  [[ -z "$1" ]] && { echo "usage: mpv-yt <url>"; return 1; }
+  [[ -z "$1" ]] && {
+    echo "usage: mpv-yt <url>"
+    return 1
+  }
   mpv --ytdl-format="bestvideo[height<=1080]+bestaudio/best" "$1"
 }
