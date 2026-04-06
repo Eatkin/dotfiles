@@ -105,7 +105,7 @@ return {
         "typescript-language-server",
         "asm-lsp",
         "jinja-lsp",
-        "svelte",
+        "svelte-language-server",
       }
     end,
   },

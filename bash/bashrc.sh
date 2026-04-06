@@ -48,6 +48,8 @@ fi
 # Load custom functions
 if [ -f "$HOME/dotfiles/bash/functions.sh" ]; then
   source "$HOME/dotfiles/bash/functions.sh"
+  source "$HOME/dotfiles/bash/wikipedia.sh"
+  source "$HOME/dotfiles/bash/youtube.sh"
 fi
 
 # Setup reddit cli if available
