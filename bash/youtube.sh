@@ -59,41 +59,58 @@ ytsync() {
 }
 
 _yt_parse_rss() {
-  # called via xargs -P, args: channel_id channel_name
   local channel_id="$1" channel_name="$2"
   local url="https://www.youtube.com/feeds/videos.xml?channel_id=${channel_id}"
+  local tmp_xml=$(mktemp)
 
-  local xml
-  xml=$(curl -sf "$url") || return 0 # silently skip dead channels
+  # Fetch the XML
+  local http_code=$(curl -s -L -o "$tmp_xml" -w "%{http_code}" \
+    --connect-timeout 5 --max-time 10 --retry 2 "$url")
 
-  python3 - <<EOF
+  if [[ "$http_code" -ne 200 ]]; then
+    echo "Error: $channel_name ($channel_id) HTTP $http_code" >&2
+    rm -f "$tmp_xml"
+    return 0
+  fi
+
+  # Pass variables as Environment Variables to Python for safety
+  export CHANNEL_NAME="$channel_name"
+  export XML_FILE="$tmp_xml"
+
+  python3 - <<'EOF'
 import xml.etree.ElementTree as ET
-import json, sys
+import json, sys, os
 
 ns = {
-  'atom': 'http://www.w3.org/2005/Atom',
-  'yt':   'http://www.youtube.com/xml/schemas/2015',
-  'media':'http://search.yahoo.com/mrss/',
+    'atom': 'http://www.w3.org/2005/Atom',
+    'yt':   'http://www.youtube.com/xml/schemas/2015',
 }
 
-try:
-  root = ET.fromstring("""${xml//\"/\\\"}""")
-except ET.ParseError:
-  sys.exit(0)
+channel_name = os.getenv('CHANNEL_NAME')
+xml_file = os.getenv('XML_FILE')
 
+try:
+    # FIX: Parse the FILE, not the filename string
+    tree = ET.parse(xml_file)
+    root = tree.getroot()
+except Exception:
+    sys.exit(0)
+
+# Get the latest 5 entries
 entries = root.findall('atom:entry', ns)[:5]
 for e in entries:
-  title     = e.findtext('atom:title', '', ns)
-  video_id  = e.findtext('yt:videoId', '', ns)
-  published = e.findtext('atom:published', '', ns)
-  url       = f"https://www.youtube.com/watch?v={video_id}"
-  print(json.dumps({
-    "channel": "${channel_name}",
-    "title":   title,
-    "url":     url,
-    "published": published,
-  }))
+    video_id  = e.findtext('yt:videoId', '', ns)
+    if not video_id: continue
+    
+    print(json.dumps({
+        "channel": channel_name,
+        "title":   e.findtext('atom:title', '', ns),
+        "url":     f"https://www.youtube.com/watch?v={video_id}",
+        "published": e.findtext('atom:published', '', ns),
+    }))
 EOF
+
+  rm -f "$tmp_xml"
 }
 
 export -f _yt_parse_rss
@@ -102,23 +119,36 @@ ytfetch() {
   local config=~/.config/youtube
   local subs_file="$config/subs.json"
   local cache_file="$config/feed_cache.json"
+  local temp_results=$(mktemp)
 
-  [[ ! -f "$subs_file" ]] && {
-    echo "no subs cache"
-    return 1
-  }
+  [[ ! -f "$subs_file" ]] && return 1
 
-  echo "fetching RSS feeds..."
-
-  local results
-  results=$(jq -r '.[] | "\(.channel_id)|\(.name)"' "$subs_file" |
-    xargs -P 20 -d$'\n' -I {} bash -c '
+  # Fetch current results into a temp file
+  jq -r '.[] | "\(.channel_id)|\(.name)"' "$subs_file" |
+    xargs -P 8 -d$'\n' -I {} bash -c '
       IFS="|" read -r id name <<< "{}"
       _yt_parse_rss "$id" "$name"
-    ')
+    ' >"$temp_results"
 
-  echo "$results" | jq -s 'sort_by(.published) | reverse' >"$cache_file"
-  echo "cached $(jq 'length' "$cache_file") videos to $cache_file"
+  # Check if we actually got anything
+  if [[ ! -s "$temp_results" ]]; then
+    echo "Nothing returned"
+    rm -f "$temp_results"
+    return 0
+  fi
+
+  # Merge
+  if [[ -f "$cache_file" ]]; then
+    jq -s 'flatten | unique_by(.url) | sort_by(.published) | reverse | .[0:500]' \
+      "$cache_file" "$temp_results" >"${cache_file}.new" &&
+      mv "${cache_file}.new" "$cache_file"
+  else
+    # If no cache exists, just wrap the new objects into an array
+    jq -s 'sort_by(.published) | reverse' "$temp_results" >"$cache_file"
+  fi
+
+  echo "Cache updated. Total videos: $(jq 'length' "$cache_file")"
+  rm -f "$temp_results"
 }
 
 export -f _yt_parse_rss
@@ -133,7 +163,7 @@ export -f _gen_list
 ytfeed() {
   local cache_file="$HOME/.config/youtube/feed_cache.json"
 
-local selected=$(_gen_list |
+  local selected=$(_gen_list |
     fzf --ansi \
       --header "CTRL+j/k / arrow keys: Move | CTRL+R: Reload feed | CTRL-U/D: Scroll Preview | ENTER: Play | ESC: Quit" \
       --delimiter $'\t' \
@@ -142,7 +172,6 @@ local selected=$(_gen_list |
       --bind "ctrl-r:reload(bash -c 'ytfetch > /dev/null 2>&1 && _gen_list')" \
       --bind "ctrl-u:half-page-up" \
       --bind "ctrl-d:half-page-down" \
-      --bind "q:abort" \
       --bind "ctrl-j:down" \
       --bind "ctrl-k:up")
 

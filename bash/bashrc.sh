@@ -50,6 +50,8 @@ if [ -f "$HOME/dotfiles/bash/functions.sh" ]; then
   source "$HOME/dotfiles/bash/functions.sh"
   source "$HOME/dotfiles/bash/wikipedia.sh"
   source "$HOME/dotfiles/bash/youtube.sh"
+  source "$HOME/dotfiles/bash/chat.sh"
+  source "$HOME/dotfiles/bash/chat_picker.sh"
 fi
 
 # Setup reddit cli if available

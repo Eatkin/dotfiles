@@ -76,6 +76,7 @@ require("lazy").setup {
   require "plugins.terminal",
   require "plugins.kanban",
   require "plugins.dap",
+  require "plugins.ollama",
 }
 
 -- Load past loaded theme
