@@ -18,11 +18,11 @@ return {
           "html",
           "emmet_ls",
           "lua_ls",
-          "bash-language-server",
-          "yaml-language-server",
-          "asm-lsp",
-          "jinja-lsp",
-          "svelte-language-server",
+          "bashls",
+          "yamlls",
+          "asm_lsp",
+          "jinja_lsp",
+          "svelte",
         },
         automatic_installation = true,
       }
@@ -51,9 +51,9 @@ return {
           "html",
           "cssls",
           "emmet_ls",
-          "asm-lsp",
-          "jinja-lsp",
-          "svelte-language-server",
+          "asm_lsp",
+          "jinja_lsp",
+          "svelte",
         },
         automatic_installation = true,
       }
@@ -86,12 +86,12 @@ return {
       vim.lsp.config("html", { capabilities = capabilities })
       vim.lsp.config("cssls", { capabilities = capabilities })
       vim.lsp.config("emmet_ls", { capabilities = capabilities })
-      vim.lsp.config("bash-language-server", { capabilities = capabilities })
-      vim.lsp.config("yaml-language-server", { capabilities = capabilities })
-      vim.lsp.config("typescript-language-server", { capabilities = capabilities })
-      vim.lsp.config("asm-lsp", { capabilities = capabilities })
-      vim.lsp.config("jinja-lsp", { capabilities = capabilities })
-      vim.lsp.config("svelte-language-server", { capabilities = capabilities })
+      vim.lsp.config("bashls", { capabilities = capabilities })
+      vim.lsp.config("yamlls", { capabilities = capabilities })
+      vim.lsp.config("ts_ls", { capabilities = capabilities })
+      vim.lsp.config("asm_lsp", { capabilities = capabilities })
+      vim.lsp.config("jinja_lsp", { capabilities = capabilities })
+      vim.lsp.config("svelte", { capabilities = capabilities })
 
       -- Enable them
       vim.lsp.enable {
@@ -100,12 +100,12 @@ return {
         "html",
         "cssls",
         "emmet_ls",
-        "bash-language-server",
-        "yaml-language-server",
-        "typescript-language-server",
-        "asm-lsp",
-        "jinja-lsp",
-        "svelte-language-server",
+        "bashls",
+        "yamlls",
+        "ts_ls",
+        "asm_lsp",
+        "jinja_lsp",
+        "svelte",
       }
     end,
   },
