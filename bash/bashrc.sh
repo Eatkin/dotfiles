@@ -18,16 +18,6 @@ if command -v direnv >/dev/null 2>&1; then
   eval "$(direnv hook bash)"
 fi
 
-# Miniconda PATH
-if [ -d "$HOME/miniconda3/bin" ] && [[ ":$PATH:" != *":$HOME/miniconda3/bin:"* ]]; then
-  export PATH="$HOME/miniconda3/bin:$PATH"
-fi
-
-# Initialise conda for shell sessions
-if [ -f "$HOME/miniconda3/etc/profile.d/conda.sh" ]; then
-  . "$HOME/miniconda3/etc/profile.d/conda.sh"
-fi
-
 # Zoxide / fzf
 if command -v zoxide >/dev/null 2>&1; then
   eval "$(zoxide init bash --cmd cd)"

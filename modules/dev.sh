@@ -17,36 +17,6 @@ if ! command -v gh >/dev/null 2>&1; then
   echo "You will need to run 'gh auth login' manually"
 fi
 
-# VSCode
-# if ! command -v code >/dev/null 2>&1; then
-#   echo "Installing VS Code..."
-#   wget -qO ~/vscode.deb "https://code.visualstudio.com/sha/download?build=stable&os=linux-deb-x64"
-#   sudo apt install -y ~/vscode.deb
-#   rm ~/vscode.deb
-# fi
-
-# echo "Installing VS Code extensions..."
-# while read -r ext; do
-#   if ! code --list-extensions | grep -q "^$ext$"; then
-#     code --install-extension "$ext"
-#     echo "✓ Installed $ext"
-#   fi
-# done <~/dotfiles/etc/vscode-extensions.txt
-
-echo "Synchronising settings"
-VSCODE_SETTINGS="$HOME/.config/Code/User/settings.json"
-mkdir -p "$(dirname "$VSCODE_SETTINGS")"
-cp ~/dotfiles/vscode/settings.json "$VSCODE_SETTINGS"
-
-# Miniconda
-if [ ! -d "$HOME/miniconda3" ]; then
-  echo "Installing Miniconda..."
-  wget -qO ~/miniconda.sh https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh
-  bash ~/miniconda.sh -b -p "$HOME/miniconda3"
-  rm ~/miniconda.sh
-  echo "Miniconda installed"
-fi
-
 # Python formatters/linters/etc
 PYTHON=$(command -v python3 || echo python)
 
