@@ -172,3 +172,10 @@ if ! command -v "cargo" >/dev/null 2>&1; then
   echo "Installing rust for cargo..."
   curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
 fi
+
+# We'll set up uv and ty here
+if ! command -v "uv" >/dev/null 2>&1; then
+  echo "Installing uv and ty"
+  curl -LsSf https://astral.sh/uv/install.sh | sh
+  "$HOME/.local/bin/uv" tool install ty
+fi

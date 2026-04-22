@@ -1,54 +1,57 @@
-# Base pyproject.toml template 
-# Linting rules for max line length, max complexity, enforced one import per line
 [project]
 name = "project-name"
 version = "0.1.0"
 description = "A short description of your project."
 readme = "README.md"
 requires-python = ">=3.12"
-authors = [
-    { name="Your Name", email="your.email@example.com" }
-]
-license = { text="MIT" }
-keywords = ["python", "starter", "template"]
-
-dependencies = [
-]
+authors = [{ name = "Ed", email = "your.email@example.com" }]
+license = { text = "MIT" }
+dependencies = []
 
 [project.optional-dependencies]
-dev = [
-    "pytest",
-    "black",
-    "isort",
-    "mypy",
-    "flake8",
-    "flake8-bugbear",
-    "flake8-comprehensions",
-]
+dev = ["ruff", "ty", "pytest", "pre-commit"]
 
 [build-system]
-requires = ["setuptools>=65.0", "wheel"]
-build-backend = "setuptools.build_meta"
+requires = ["hatchling"]
+build-backend = "hatchling.build"
 
-[tool.black]
+[tool.ruff]
 line-length = 88
-target-version = ["py312"]
+target-version = "py312"
 
-[tool.isort]
-profile = "black"
-force_single_line = true        
-lines_after_imports = 2
-multi_line_output = 3
-include_trailing_comma = true
+[tool.ruff.lint]
+select = [
+    "E",    # pycodestyle errors
+    "W",    # pycodestyle warnings
+    "F",    # pyflakes (flake8 core)
+    "I",    # isort
+    "N",    # pep8-naming (snake_case, PascalCase enforcement)
+    "UP",   # pyupgrade (modernise syntax)
+    "B",    # flake8-bugbear (real bugs)
+    "C90",  # mccabe complexity
+    "SIM",  # flake8-simplify
+    "RUF",  # ruff-native rules
+    "C4",   # flake8-comprehensions (replaces flake8-comprehensions)
+]
+ignore = [
+    "E501",
+]
 
-[tool.flake8]
-max-line-length = 88
-max-complexity = 10  # max McCabe complexity per function
-extend-ignore = ["E203", "W503"]  # black-compatible ignores
-select = ["E", "F", "W", "C90", "B", "COM"]  # E: pycodestyle, F: pyflakes, W: warnings, C90: mccabe, B: bugbear, COM: comprehensions
+[tool.ruff.lint.mccabe]
+max-complexity = 10
 
-[tool.mypy]
-python_version = 3.12
-strict = true
-ignore_missing_imports = true
+[tool.ruff.lint.isort]
+force-single-line = true
+lines-after-imports = 2
 
+[tool.ruff.lint.per-file-ignores]
+"__init__.py" = ["F401"]
+
+[tool.ruff.format]
+[tool.ty]
+[tool.ty.environment]
+python-version = "3.12"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = "test_*.py"

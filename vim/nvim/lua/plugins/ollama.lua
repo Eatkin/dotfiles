@@ -23,7 +23,19 @@ return {
         },
       },
       virtualtext = {
-        auto_trigger_ft = { "*" },
+        auto_trigger_ft = {
+          "python",
+          "css",
+          "html",
+          "lua",
+          "bash",
+          "asm",
+          "jinja2",
+          "svelte",
+          "javascript",
+          "typescript",
+          "sh",
+        },
         keymap = {
           accept = "<C-a>", -- Basically tab hijacks so use ctrl+A instead
           accept_line = "<C-y>",

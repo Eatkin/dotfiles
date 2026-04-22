@@ -13,7 +13,7 @@ return {
     config = function()
       require("mason-lspconfig").setup {
         ensure_installed = {
-          "pyright",
+          -- Python: ty replaces pyright
           "cssls",
           "html",
           "emmet_ls",
@@ -23,6 +23,7 @@ return {
           "asm_lsp",
           "jinja_lsp",
           "svelte",
+          "ts_ls",
         },
         automatic_installation = true,
       }
@@ -31,71 +32,48 @@ return {
 
   -- LSP
   {
-    "neovim/nvim-lspconfig", -- still needed for server definitions
+    "neovim/nvim-lspconfig",
     dependencies = {
       "williamboman/mason.nvim",
       "williamboman/mason-lspconfig.nvim",
       "hrsh7th/cmp-nvim-lsp",
     },
     config = function()
-      local mason = require "mason"
-      local mason_lsp = require "mason-lspconfig"
       local cmp_lsp = require "cmp_nvim_lsp"
-
-      mason.setup()
-
-      mason_lsp.setup {
-        ensure_installed = {
-          "pyright",
-          "lua_ls",
-          "html",
-          "cssls",
-          "emmet_ls",
-          "asm_lsp",
-          "jinja_lsp",
-          "svelte",
-        },
-        automatic_installation = true,
-      }
-
       local capabilities = cmp_lsp.default_capabilities()
+
+      -- Standard servers — no special config needed
+      local simple_servers = {
+        "html",
+        "cssls",
+        "emmet_ls",
+        "bashls",
+        "yamlls",
+        "ts_ls",
+        "asm_lsp",
+        "jinja_lsp",
+        "svelte",
+      }
+      for _, server in ipairs(simple_servers) do
+        vim.lsp.config(server, { capabilities = capabilities })
+      end
 
       vim.lsp.config("lua_ls", {
         capabilities = capabilities,
         settings = {
           Lua = {
-            diagnostics = {
-              globals = { "vim" },
-            },
+            diagnostics = { globals = { "vim" } },
           },
         },
       })
-      vim.lsp.config("pyright", {
-        capabilities = capabilities,
-        settings = {
-          python = {
-            analysis = {
-              diagnosticMode = "openFilesOnly",
-              autoSearchPaths = true,
-              useLibraryCodeForTypes = true,
-            },
-          },
-        },
-      })
-      -- vim.lsp.config("lua_ls", { capabilities = capabilities })
-      vim.lsp.config("html", { capabilities = capabilities })
-      vim.lsp.config("cssls", { capabilities = capabilities })
-      vim.lsp.config("emmet_ls", { capabilities = capabilities })
-      vim.lsp.config("bashls", { capabilities = capabilities })
-      vim.lsp.config("yamlls", { capabilities = capabilities })
-      vim.lsp.config("ts_ls", { capabilities = capabilities })
-      vim.lsp.config("asm_lsp", { capabilities = capabilities })
-      vim.lsp.config("jinja_lsp", { capabilities = capabilities })
-      vim.lsp.config("svelte", { capabilities = capabilities })
 
-      -- Enable them
+      -- ty: replaces pyright, reads pyproject.toml automatically
+      vim.lsp.config("ty", {
+        capabilities = capabilities,
+      })
+
       vim.lsp.enable {
-        "pyright",
+        "ty",
         "lua_ls",
         "html",
         "cssls",
@@ -116,10 +94,7 @@ return {
     build = ":TSUpdate",
     event = { "BufReadPost", "BufNewFile" },
     config = function()
-      local ts = require "nvim-treesitter"
-
-      -- Install parsers
-      ts.install {
+      require("nvim-treesitter").install {
         "lua",
         "python",
         "javascript",
@@ -138,7 +113,9 @@ return {
     config = function()
       require("conform").setup {
         formatters_by_ft = {
-          python = { "isort", "black" },
+          -- ruff_fix runs `ruff check --fix` (replaces isort pass)
+          -- ruff_format runs `ruff format` (replaces black)
+          python = { "ruff_fix", "ruff_format" },
           lua = { "stylua" },
           javascript = { "prettier" },
           typescript = { "prettier" },
@@ -150,11 +127,6 @@ return {
           sh = { "shfmt" },
           toml = { "pyproject-fmt" },
           asm = { "asmfmt" },
-        },
-        formatters = {
-          black = {
-            prepend_args = { "--preview", "--enable-unstable-feature", "string_processing" },
-          },
         },
       }
       vim.keymap.set("n", "<leader>fm", function()
@@ -170,7 +142,8 @@ return {
       local lint = require "lint"
 
       lint.linters_by_ft = {
-        python = { "ruff", "mypy" },
+        -- ruff only — ty diagnostics come through LSP, mypy lives in pre-commit
+        python = { "ruff" },
         javascript = { "eslint_d" },
         typescript = { "eslint_d" },
         svelte = { "eslint_d" },
@@ -183,15 +156,11 @@ return {
 
       vim.diagnostic.config {
         float = true,
-        jump = {
-          float = false,
-          wrap = true,
-        },
+        jump = { float = false, wrap = true },
         severity_sort = false,
         signs = true,
         underline = true,
         update_in_insert = false,
-
         virtual_lines = false,
         virtual_text = true,
       }
@@ -218,14 +187,12 @@ return {
             luasnip.lsp_expand(args.body)
           end,
         },
-
         mapping = cmp.mapping.preset.insert {
           ["<C-Space>"] = cmp.mapping.complete(),
           ["<CR>"] = cmp.mapping.confirm { select = true },
           ["<Tab>"] = cmp.mapping.select_next_item(),
           ["<S-Tab>"] = cmp.mapping.select_prev_item(),
         },
-
         sources = {
           { name = "nvim_lsp" },
           { name = "luasnip" },
@@ -237,8 +204,6 @@ return {
   },
 
   vim.filetype.add {
-    extension = {
-      asm = "nasm",
-    },
+    extension = { asm = "nasm" },
   },
 }
